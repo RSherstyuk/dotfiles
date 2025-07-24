@@ -1,0 +1,45 @@
+# Основные настройки
+set -g default-terminal "screen-256color"  # Поддержка цветов
+set -g base-index 1                        # Нумерация окон с 1
+set -g pane-base-index 1                   # Нумерация панелей с 1
+set -g renumber-windows on                 # Автоперенумерация окон
+set -g history-limit 10000                 # Увеличить историю прокрутки
+
+# Мышь
+set -g mouse on                            # Включить мышь (скролл, ресайз)
+bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e'"
+
+# Клавиши-модификаторы (аналогично screen)
+set -g prefix C-a                          # Меняем Ctrl+B → Ctrl+A
+unbind C-b                                 # Отвязываем старый префикс
+bind C-a send-prefix                       # Двойной Ctrl+A → отправить Ctrl+A в программу
+
+# Управление панелями
+bind | split-window -h -c "#{pane_current_path}"  # Вертикальное разделение (Ctrl+A |)
+bind - split-window -v -c "#{pane_current_path}"  # Горизонтальное разделение (Ctrl+A -)
+bind h select-pane -L                      # Переключение на левую панель (Ctrl+A h)
+bind j select-pane -D                      # Переключение на нижнюю панель (Ctrl+A j)
+bind k select-pane -U                      # Переключение на верхнюю панель (Ctrl+A k)
+bind l select-pane -R                      # Переключение на правую панель (Ctrl+A l)
+
+# Ресайз панелей
+bind -r H resize-pane -L 5                 # Увеличить панель влево (удерживать Alt)
+bind -r J resize-pane -D 5                 # Увеличить панель вниз
+bind -r K resize-pane -U 5                 # Увеличить панель вверх
+bind -r L resize-pane -R 5                 # Увеличить панель вправо
+
+# Управление окнами
+bind c new-window -c "#{pane_current_path}"  # Новое окно (Ctrl+A c)
+bind & kill-window                         # Закрыть окно (Ctrl+A &)
+bind x kill-pane                           # Закрыть панель (Ctrl+A x)
+
+# Включить поддержку буфера обмена (если tmux ≥ 2.4)
+set -s set-clipboard on
+bind y run "tmux save-buffer - | xclip -i -sel clipboard"  # Копировать в буфер (Ctrl+A y)
+
+# Визуальные улучшения
+set -g status-interval 1                   # Обновлять статус каждую секунду
+set -g status-left "#[fg=green]#S #[fg=white]• "  # Левая часть статус-бара (имя сессии)
+set -g status-right "#[fg=white]%H:%M %d-%b-%y"  # Правая часть (время)
+set -g status-style "fg=white,bg=#333333"   # Цвет статус-бара
+set -g window-status-current-style "fg=black,bg=#ffff00"  # Текущее окно
