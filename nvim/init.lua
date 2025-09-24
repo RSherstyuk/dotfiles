@@ -1,27 +1,39 @@
-vim.opt.mouse = "a" -- Enable mouse support
-vim.opt.encoding = "utf-8"       -- Общая кодировка (необязательно, по умолчанию UTF-8)
-vim.opt.fileencoding = "utf-8"  -- Кодировка файлов
-vim.opt.number = true -- Show line numbers
-vim.opt.cursorline = false -- Disable highlight current cursor's line
-vim.opt.swapfile = false -- Disable .swp files 
-vim.opt.scrolloff = 7 -- Number of lines left visible above/below the cursor when scrolling
-vim.opt.tabstop = 4 -- Spaces instead of one tab
-vim.opt.softtabstop = 4 -- Spaces instead of one tab
-vim.opt.shiftwidth = 4 -- Spaces for auto indent
-vim.opt.expandtab = false -- Replace tab with spaces
-vim.opt.autoindent = true -- Save indent on new line
-vim.opt.fileformat = "unix"
+-- ==============================
+-- Общие настройки
+-- ==============================
+vim.opt.mouse = "a"
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
+vim.opt.number = true
+vim.opt.cursorline = false
+vim.opt.swapfile = false
+vim.opt.scrolloff = 7
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = false
+vim.opt.autoindent = true
 vim.opt.smartindent = true
-vim.opt.splitbelow = true -- horizontal split open below and right
+vim.opt.fileformat = "unix"
+vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.g.mapleader = ',' -- Leader key
-vim.opt.termguicolors = true -- 24-bit colors
+vim.opt.termguicolors = true
+vim.g.mapleader = ','
 
+-- ==============================
+-- Keymaps
+-- ==============================
+vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
+vim.keymap.set('n', ',<Space>', ':nohlsearch<CR>', { noremap = true })
+vim.keymap.set('n', 'H', 'gT', { noremap = true })
+vim.keymap.set('n', 'L', 'gt', { noremap = true })
+vim.keymap.set('n', ',f', ':Telescope find_files<CR>', { noremap = true })
+vim.keymap.set('n', ',g', ':Telescope live_grep<CR>', { noremap = true })
+vim.keymap.set('n', 'gw', ':bp|bd #<CR>', { noremap = true, silent = true })
 
-vim.keymap.set('n', '<leader>d', ':Vex<CR>', { noremap = true, silent = true })
-
-
--- Открывать/заменять Netrw по <leader>d
+-- ==============================
+-- NETRW
+-- ==============================
 vim.keymap.set('n', '<leader>d', function()
   if vim.bo.filetype == 'netrw' then
     vim.cmd('q')
@@ -30,299 +42,220 @@ vim.keymap.set('n', '<leader>d', function()
   end
 end, { noremap = true, silent = true })
 
--- Закрытие Netrw по <leader>q (или любой другой удобной клавише)
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'netrw',
   callback = function()
-    -- Закрытие текущего окна Netrw
     vim.keymap.set('n', '<leader>q', ':q<CR>', { buffer = true, noremap = true, silent = true })
-    
-  end
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
-  callback = function()
-    vim.lsp.buf.format({ async = false }) -- Синхронное форматирование
   end,
 })
 
-
--- Keymaps for programming languages
-vim.api.nvim_create_autocmd('FileType', {
-
-    pattern = 'python',
-    callback = function()
-
-        vim.opt.colorcolumn = '88'
-        vim.keymap.set('n', '<C-h>', ':w<CR>:!python3 %<CR>', { buffer = true, silent = true })
-        vim.keymap.set('i', '<C-h>', '<Esc>:w<CR>:!python3 %<CR>', { buffer = true, silent = true })
-    end
+-- ==============================
+-- Автокоманды
+-- ==============================
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
 })
 
-
+-- Python
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'c',
-    callback = function()
-        vim.keymap.set('n', '<C-h>', ':w<CR>:!gcc % -o out; ./out<CR>', { buffer = true, silent = true })
-        vim.keymap.set('i', '<C-h>', '<Esc>:w<CR>:!gcc % -o out; ./out<CR>', { buffer = true, silent = true })
-    end
+  pattern = 'python',
+  callback = function()
+    vim.opt.colorcolumn = '88'
+    vim.keymap.set('n', '<C-h>', ':w<CR>:!python3 %<CR>', { buffer = true, silent = true })
+    vim.keymap.set('i', '<C-h>', '<Esc>:w<CR>:!python3 %<CR>', { buffer = true, silent = true })
+  end,
 })
 
+-- C
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = {'sh', 'go'},
-    callback = function()
-        vim.keymap.set('n', '<C-h>', ':w<CR>:!%<CR>', { buffer = true, silent = true })
-        vim.keymap.set('i', '<C-h>', '<Esc>:w<CR>:!%<CR>', { buffer = true, silent = true })
-    end
+  pattern = 'c',
+  callback = function()
+    vim.keymap.set('n', '<C-h>', ':w<CR>:!gcc % -o out; ./out<CR>', { buffer = true, silent = true })
+    vim.keymap.set('i', '<C-h>', '<Esc>:w<CR>:!gcc % -o out; ./out<CR>', { buffer = true, silent = true })
+  end,
 })
 
---
+-- Shell и Go
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'sh', 'go' },
+  callback = function()
+    vim.keymap.set('n', '<C-h>', ':w<CR>:!%<CR>', { buffer = true, silent = true })
+    vim.keymap.set('i', '<C-h>', '<Esc>:w<CR>:!%<CR>', { buffer = true, silent = true })
+  end,
+})
 
-
--- Common keymaps
-vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
-vim.keymap.set('n', ',<Space>', ':nohlsearch<CR>', { noremap = true })
-vim.keymap.set('n', 'H', 'gT', { noremap = true }) -- Переключение вкладок
-vim.keymap.set('n', 'L', 'gt', { noremap = true })
-vim.keymap.set('n', ',f', ':Telescope find_files<CR>', { noremap = true })
-vim.keymap.set('n', ',g', ':Telescope live_grep<CR>', { noremap = true })
-vim.keymap.set('n', 'gw', ':bp|bd #<CR>', { noremap = true, silent = true })
-
--- Plugins with packer.nvim
+-- ==============================
+-- Плагины (packer)
+-- ==============================
 require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
+  use 'nvim-lua/plenary.nvim'
 
-    use 'wbthomason/packer.nvim'
+  -- LSP / Completion
+  use 'neovim/nvim-lspconfig'
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'saadparwaiz1/cmp_luasnip'
 
-    use {
-      'L3MON4D3/LuaSnip',
-      config = function()
-        local ls = require("luasnip")
-        local snip_path = vim.fn.stdpath("config") .. "/snippets"
-        require("luasnip.loaders.from_lua").lazy_load({ paths = snip_path })
+  -- Snippets
+  use {
+    'L3MON4D3/LuaSnip',
+    config = function()
+      local ls = require("luasnip")
+      require("luasnip.loaders.from_lua").lazy_load({ paths = vim.fn.stdpath("config") .. "/snippets" })
+      vim.keymap.set({"i", "s"}, "<Tab>", function()
+        if ls.expand_or_jumpable() then
+          ls.expand_or_jump()
+        else
+          return "<Tab>"
+        end
+      end, { expr = true, silent = true })
+      vim.keymap.set({"i", "s"}, "<S-Tab>", function()
+        if ls.jumpable(-1) then
+          ls.jump(-1)
+        end
+      end, { silent = true })
+    end
+  }
 
-        -- ваши маппинги для expand/jump
-        vim.keymap.set({"i", "s"}, "<Tab>", function()
-          if ls.expand_or_jumpable() then
-            ls.expand_or_jump()
-          else
-			  return "<Tab>"
-		  end
-        end, { silent = true, exper = true })
+  -- Syntax highlight
+  use 'nvim-treesitter/nvim-treesitter'
 
-        vim.keymap.set({"i", "s"}, "<S-Tab>", function()
-          if ls.jumpable(-1) then
-            ls.jump(-1)
-          end
-        end, { silent = true })
+  -- Themes
+  use 'morhetz/gruvbox'
+  use 'ayu-theme/ayu-vim'
+  use 'sainnhe/gruvbox-material'
+  use 'rebelot/kanagawa.nvim'
 
-      end
-    }
+  -- Comments
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup({
+        padding = true,
+        toggler = { line = ',cc', block = ',cb' },
+        opleader = { line = ',c', block = ',b' },
+      })
+    end
+  }
 
-    use 'nvim-lua/plenary.nvim' -- For Telescope plugin
-    use 'neovim/nvim-lspconfig' -- LSP
-    use 'hrsh7th/nvim-cmp' -- Autocomplete
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'saadparwaiz1/cmp_luasnip'
-    use 'nvim-treesitter/nvim-treesitter' -- Подсветка синтаксиса
+  -- Telescope
+  use 'nvim-telescope/telescope.nvim'
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
-    use 'morhetz/gruvbox' -- Color schemes
-    use 'ayu-theme/ayu-vim'
-    --[[
-    use({
-      'rose-pine/neovim',
-      as = 'rose-pine',
-      config = function()
-        require('rose-pine').setup({
-          dark_variant = 'main', -- Variants: 'main', 'moon', 'dawn'
-          disable_background = true, -- Disable background
-          disable_float_background = false, -- Disable background for windows
-        })
-        vim.cmd('colorscheme rose-pine')
-      end,
-    })
-    --]]
-    use 'sainnhe/gruvbox-material'
-    use 'rebelot/kanagawa.nvim'
-
-    -- Comment/uncomment by gcc for current line of gc for seleted lines
-    use {
-      'numToStr/Comment.nvim',
-      config = function()
-        require('Comment').setup({
-            -- Включить/отключить добавление пробела после символа комментария
-            padding = true,
-            -- Переназначаем ключевые привязки
-            toggler = {
-                line = ',cc',  -- Закомментировать строку (вместо 'gcc')
-                block = ',cb', -- Закомментировать блок (вместо 'gbc')
-            },
-            opleader = {
-                line = ',c',   -- Закомментировать строки в визуальном режиме (вместо 'gc')
-                block = ',b',  -- Закомментировать блоки в визуальном режиме (вместо 'gb')
-            },
-        })
-      end
-    }
-
-    use 'nvim-telescope/telescope.nvim'
-    use 'nvim-telescope/telescope-fzf-native.nvim'
-    use 'Pocco81/auto-save.nvim' -- Автосохранение
-    use 'jose-elias-alvarez/null-ls.nvim' -- Форматирование и линтинг
+  -- Utils
+  use 'Pocco81/auto-save.nvim'
+  use 'jose-elias-alvarez/null-ls.nvim'
 end)
 
--- Color scheme
---vim.cmd([[colorscheme "rose-pine-main"]])
-vim.cmd([[colorscheme kanagawa-dragon]]) -- kanagawa-wave, kanagawa-dragon, kanagawa-lotus
+-- ==============================
+-- Цветовая схема
+-- ==============================
+vim.cmd([[colorscheme kanagawa-dragon]])
 
--- LSP
+-- ==============================
+-- Настройка LSP
+-- ==============================
 local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local on_attach = function(client, bufnr)
 
-    -- Быстрые команды для LSP
-    local opts = { buffer = bufnr, noremap = true, silent = true }
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
-
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-    vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-    vim.keymap.set('n', '<space>f', function()
-      vim.lsp.buf.format { async = true }
-    end, opts)
+local on_attach = function(_, bufnr)
+  local opts = { buffer = bufnr, noremap = true, silent = true }
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+  vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
 end
 
--- Настройка LSP для Python (Pyright)
-lspconfig.pyright.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-        python = {
-            analysis = {
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = "workspace",
-            },
-        },
-    },
-})
-
--- Пример настройки LSP для TypeScript
-lspconfig.ts_ls.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-})
-
--- Пример настройки LSP для Go
+-- Серверы
+lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach })
+lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach })
 lspconfig.gopls.setup({
-    cmd = { "gopls" }, -- Убедитесь, что `gopls` доступен в PATH
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        gopls = {
-            analyses = {
-                unusedparams = true,
-            },
-            staticcheck = true,
-        },
-    },
+  cmd = { "gopls" },
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = { gopls = { analyses = { unusedparams = true }, staticcheck = true } }
 })
-
--- Пример настройки LSP для Rust
 lspconfig.rust_analyzer.setup({
-    cmd = { "rust-analyzer" }, -- Убедитесь, что `rust-analyzer` доступен в PATH
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        ["rust-analyzer"] = {
-            cargo = {
-                allFeatures = true,
-            },
-            procMacro = {
-                enable = true,
-            },
-        },
-    },
+  cmd = { "rust-analyzer" },
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = { ["rust-analyzer"] = { cargo = { allFeatures = true }, procMacro = { enable = true } } }
 })
-
 lspconfig.clangd.setup({
-  capabilities = require('cmp_nvim_lsp').default_capabilities(),
-  cmd = {
-    "clangd",
-    "--background-index",  -- Индексация в фоне
-    "--clang-tidy",       -- Включить clang-tidy
-    "--header-insertion=never", -- Не добавлять авто-инклуды
-    "--all-scopes-completion",  -- Полноценный автокомплит
-  },
+  capabilities = capabilities,
+  cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=never", "--all-scopes-completion" },
   filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
   single_file_support = true,
 })
 
--- Null-ls для Prettier
+-- ==============================
+-- Null-ls
+-- ==============================
 require('null-ls').setup({
-    sources = {
-        require('null-ls').builtins.formatting.prettier,
-		require('null-ls').builtins.formatting.clang_format,
-    }
-
+  sources = {
+    require('null-ls').builtins.formatting.prettier,
+    require('null-ls').builtins.formatting.clang_format,
+  }
 })
 
+-- ==============================
 -- Telescope
+-- ==============================
 require('telescope').setup({
   defaults = {
-    file_ignore_patterns = {
-      "%.pyc$",
-      "__pycache__/",
-      "%.pyo$",
-    },
+    file_ignore_patterns = { "%.pyc$", "__pycache__/", "%.pyo$" },
   },
 })
 require('telescope').load_extension('fzf')
 
+-- ==============================
 -- Auto-save
+-- ==============================
 require('auto-save').setup()
 
+-- ==============================
+-- Clipboard
+-- ==============================
 vim.g.clipboard = {
   name = 'xclip',
-  copy = {
-    ['+'] = 'xclip -selection clipboard',
-    ['*'] = 'xclip -selection clipboard',
-  },
-  paste = {
-    ['+'] = 'xclip -selection clipboard -o',
-    ['*'] = 'xclip -selection clipboard -o',
-  },
-  cache_enabled = 1,  -- Кэширование для скорости
+  copy = { ['+'] = 'xclip -selection clipboard', ['*'] = 'xclip -selection clipboard' },
+  paste = { ['+'] = 'xclip -selection clipboard -o', ['*'] = 'xclip -selection clipboard -o' },
+  cache_enabled = 1,
 }
 
+-- ==============================
+-- nvim-cmp
+-- ==============================
 local cmp = require('cmp')
 cmp.setup({
-  completion = {
-    autocomplete = false, -- Отключить автоматическое появление
-  },
+  completion = { autocomplete = false },
   mapping = {
-    ['<C-Space>'] = cmp.mapping.complete(), -- Вызов меню автокомплита
-    ['<C-e>'] = cmp.mapping.abort(), -- Закрыть меню
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Подтвердить выбор
-    ['<C-p>'] = cmp.mapping.select_prev_item(), -- Навигация вверх
-    ['<C-n>'] = cmp.mapping.select_next_item(), -- Навигация вниз
-    ['<Up>'] = cmp.mapping.select_prev_item(), -- Навигация вверх (стрелка вверх)
-    ['<Down>'] = cmp.mapping.select_next_item(), -- Навигация вниз (стрелка вниз)  
-},
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },  -- Источник из LSP
-    }),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<Up>'] = cmp.mapping.select_prev_item(),
+    ['<Down>'] = cmp.mapping.select_next_item(),
+  },
+  sources = cmp.config.sources({ { name = 'nvim_lsp' } }),
 })
 
--- transparent bg — remove if you want
+-- ==============================
+-- Transparent background (optional)
+-- ==============================
 vim.cmd([[
   highlight Normal guibg=NONE ctermbg=NONE
   highlight NonText guibg=NONE ctermbg=NONE
@@ -330,12 +263,11 @@ vim.cmd([[
   highlight EndOfBuffer guibg=NONE ctermbg=NONE
 ]])
 
-
-
+-- ==============================
+-- LuaSnip settings
+-- ==============================
 require("luasnip").config.set_config {
   history = true,
   updateevents = "TextChanged,TextChangedI"
 }
-
-
 
