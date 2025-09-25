@@ -148,7 +148,10 @@ require('packer').startup(function(use)
 
   -- Utils
   use 'Pocco81/auto-save.nvim'
-  use 'jose-elias-alvarez/null-ls.nvim'
+  -- use 'jose-elias-alvarez/null-ls.nvim'
+
+  use 'mfussenegger/nvim-lint'
+  use 'stevearc/conform.nvim'
 end)
 
 -- ==============================
@@ -203,12 +206,55 @@ lspconfig.clangd.setup({
 -- ==============================
 -- Null-ls
 -- ==============================
-require('null-ls').setup({
-  sources = {
-    require('null-ls').builtins.formatting.prettier,
-    require('null-ls').builtins.formatting.clang_format,
-  }
+-- require('null-ls').setup({
+--   sources = {
+--     require('null-ls').builtins.formatting.prettier,
+--     require('null-ls').builtins.formatting.clang_format,
+--   }
+-- })
+
+
+-- ==============================
+-- conform.nvim (форматтеры)
+
+require("conform").setup({
+  formatters_by_ft = {
+    lua = { "stylua" },
+    python = { "black" },
+    javascript = { "prettier" },
+    c = { "clang-format" },
+    cpp = { "clang-format" },
+  },
 })
+
+-- авто-формат при сохранении
+vim.api.nvim_create_autocmd("BufWritePre", {
+  callback = function(args)
+    require("conform").format({ bufnr = args.buf })
+  end,
+})
+
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
+  callback = function(args)
+    -- sync поведение (async = false) — чтобы файл был отформатирован до записи, как раньше
+    require("conform").format({ bufnr = args.buf, async = false, lsp_format = "fallback", timeout_ms = 2000 })
+  end,
+})
+
+-- nvim-lint (линтеры)
+require("lint").linters_by_ft = {
+  python = { "flake8" },
+  javascript = { "eslint_d" },
+  sh = { "shellcheck" },
+}
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
+-- ==============================
 
 -- ==============================
 -- Telescope
