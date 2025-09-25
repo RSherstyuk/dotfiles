@@ -181,6 +181,16 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
 end
 
+-- Включаем отображение текста ошибок
+vim.diagnostic.config({
+  virtual_text = true,  -- Показывать текст ошибок справа от строки
+  signs = true,         -- Оставлять значки (E, W и т.д.)
+  underline = true,     -- Подчёркивать ошибочный текст
+  update_in_insert = false,
+  severity_sort = true,
+})
+
+
 -- Серверы
 lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach })
 lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach })
