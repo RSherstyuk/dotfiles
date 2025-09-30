@@ -53,6 +53,7 @@ vim.keymap.set('n', ',gb', ':Telescope git_branches<CR>', { noremap = true, sile
 vim.keymap.set('n', ',gc', ':Telescope git_commits<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', ',gs', ':Telescope git_status<CR>', { noremap = true, silent = true })
 
+vim.keymap.set('n', '<leader>gu', ':Git checkout -- %<CR>', { noremap = true, silent = true })
 -- ==============================
 -- NETRW
 -- ==============================
