@@ -48,6 +48,11 @@ vim.keymap.set('n', ',f', ':Telescope find_files<CR>', { noremap = true })
 vim.keymap.set('n', ',g', ':Telescope live_grep<CR>', { noremap = true })
 vim.keymap.set('n', 'gw', ':bp|bd #<CR>', { noremap = true, silent = true })
 
+-- Git через Telescope
+vim.keymap.set('n', ',gb', ':Telescope git_branches<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', ',gc', ':Telescope git_commits<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', ',gs', ':Telescope git_status<CR>', { noremap = true, silent = true })
+
 -- ==============================
 -- NETRW
 -- ==============================
@@ -169,6 +174,14 @@ require('packer').startup(function(use)
 
   use 'mfussenegger/nvim-lint'
   use 'stevearc/conform.nvim'
+
+
+  -- Git плагины
+use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+use 'tpope/vim-fugitive'
+use 'tpope/vim-rhubarb' -- поддержка GitHub для fugitive
+use 'nvim-lualine/lualine.nvim'
+
 end)
 
 -- ==============================
@@ -343,5 +356,34 @@ vim.cmd([[
 require("luasnip").config.set_config {
   history = true,
   updateevents = "TextChanged,TextChangedI"
+}
+
+-- Настройка gitsigns.nvim
+require('gitsigns').setup {
+  signs = {
+    add          = {hl = 'GitGutterAdd'   , text = '+'},
+    change       = {hl = 'GitGutterChange', text = '~'},
+    delete       = {hl = 'GitGutterDelete', text = '_'},
+    topdelete    = {hl = 'GitGutterDeleteChange', text = '‾'},
+    changedelete = {hl = 'GitGutterChange', text = '~'},
+  },
+  current_line_blame = true, -- можно включить blame строк
+}
+
+--Настройка lualine для ветки git
+require('lualine').setup {
+  options = {
+    theme = 'gruvbox',
+    section_separators = '',
+    component_separators = ''
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  }
 }
 
