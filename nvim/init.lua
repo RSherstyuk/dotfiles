@@ -18,7 +18,24 @@ vim.opt.fileformat = "unix"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.termguicolors = true
+vim.opt.relativenumber = true
 vim.g.mapleader = ','
+vim.opt.clipboard = "unnamedplus"
+
+-- ==============================
+vim.g.clipboard = {
+  name = "win32yank",
+  copy = {
+    ["+"] = "/home/xyz/bin/win32yank.exe -i --crlf",
+    ["*"] = "/home/xyz/bin/win32yank.exe -i --crlf",
+  },
+  paste = {
+    ["+"] = "/home/xyz/bin/win32yank.exe -o --lf",
+    ["*"] = "/home/xyz/bin/win32yank.exe -o --lf",
+  },
+  cache_enabled = 0,
+}
+-- ==============================
 
 -- ==============================
 -- Keymaps
@@ -129,7 +146,7 @@ require('packer').startup(function(use)
   use 'ayu-theme/ayu-vim'
   use 'sainnhe/gruvbox-material'
   use 'rebelot/kanagawa.nvim'
-
+  
   -- Comments
   use {
     'numToStr/Comment.nvim',
@@ -158,7 +175,6 @@ end)
 -- Цветовая схема
 -- ==============================
 vim.cmd([[colorscheme kanagawa-dragon]])
-
 -- ==============================
 -- Настройка LSP
 -- ==============================
@@ -284,12 +300,14 @@ require('auto-save').setup()
 -- ==============================
 -- Clipboard
 -- ==============================
-vim.g.clipboard = {
-  name = 'xclip',
-  copy = { ['+'] = 'xclip -selection clipboard', ['*'] = 'xclip -selection clipboard' },
-  paste = { ['+'] = 'xclip -selection clipboard -o', ['*'] = 'xclip -selection clipboard -o' },
-  cache_enabled = 1,
-}
+-- vim.g.clipboard = {
+--   name = 'xclip',
+--   copy = { ['+'] = 'xclip -selection clipboard', ['*'] = 'xclip -selection clipboard' },
+--   paste = { ['+'] = 'xclip -selection clipboard -o', ['*'] = 'xclip -selection clipboard -o' },
+--   cache_enabled = 1,
+-- }
+
+
 
 -- ==============================
 -- nvim-cmp
