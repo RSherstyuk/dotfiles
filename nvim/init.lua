@@ -53,7 +53,6 @@ vim.keymap.set('n', ',gb', ':Telescope git_branches<CR>', { noremap = true, sile
 vim.keymap.set('n', ',gc', ':Telescope git_commits<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', ',gs', ':Telescope git_status<CR>', { noremap = true, silent = true })
 
-vim.keymap.set('n', '<leader>gu', ':Git checkout -- %<CR>', { noremap = true, silent = true })
 -- ==============================
 -- NETRW
 -- ==============================
@@ -116,8 +115,6 @@ vim.api.nvim_create_autocmd('FileType', {
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'nvim-lua/plenary.nvim'
-
-  -- LSP / Completion
   use 'neovim/nvim-lspconfig'
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-nvim-lsp'
@@ -182,6 +179,28 @@ use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
 use 'tpope/vim-fugitive'
 use 'tpope/vim-rhubarb' -- поддержка GitHub для fugitive
 use 'nvim-lualine/lualine.nvim'
+
+
+  -- Jupyter / Python Notebooks
+  use {
+    "GCBallesteros/jupytext.nvim",
+    config = function()
+      require("jupytext").setup({
+        style = "hydrogen", -- или "percent" для # %%
+        output_extension = "ipynb",
+        force_ft = "python",
+      })
+    end
+  }
+
+use {
+  "benlubas/molten-nvim",
+  run = ":UpdateRemotePlugins",
+  config = function()
+    vim.g.molten_output_win_max_height = 20
+    vim.g.molten_auto_open_output = true
+  end
+}
 
 end)
 
@@ -368,7 +387,7 @@ require('gitsigns').setup {
     topdelete    = {hl = 'GitGutterDeleteChange', text = '‾'},
     changedelete = {hl = 'GitGutterChange', text = '~'},
   },
-  current_line_blame = true, -- можно включить blame строк
+  current_line_blame = false, -- можно включить blame строк
 }
 
 --Настройка lualine для ветки git
@@ -388,3 +407,80 @@ require('lualine').setup {
   }
 }
 
+ 
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+  pattern = "*.ipynb",
+  callback = function()
+    if vim.fn.executable("jupytext") == 1 then
+      vim.cmd("JupytextLoad")
+    else
+      vim.notify("jupytext (Python) is not installed! Run `pip install jupytext`.", vim.log.levels.ERROR)
+    end
+  end,
+})
+
+-- vim.g.molten_image_provider = "wezterm"  -- или "kitty" / "none"
+-- Горячие клавиши для работы с ячейками (Molten)
+vim.keymap.set("n", "<leader>rr", ":MoltenEvaluateLine<CR>", { noremap = true, silent = true })
+vim.keymap.set("v", "<leader>rr", ":<C-u>MoltenEvaluateVisual<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>rc", ":MoltenEvaluateCell<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ra", ":MoltenEvaluateBuffer<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ro", ":MoltenShowOutput<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>rk", ":MoltenRestart<CR>", { noremap = true, silent = true })
+
+-- Функция для открытия любого файла изображения под курсором
+local function open_any_image_fim()
+    local word_under_cursor = vim.fn.expand('<cfile>')
+    local current_dir = vim.fn.expand('%:p:h')
+    local full_path = current_dir .. '/' .. word_under_cursor
+    
+    -- Проверяем существование файла
+    if vim.fn.filereadable(full_path) == 0 then
+        vim.notify("Файл не найден: " .. full_path, vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Проверяем расширение
+    local extension = vim.fn.fnamemodify(word_under_cursor, ':e')
+    local image_extensions = {
+        'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'
+    }
+    
+    local is_image = false
+    for _, ext in ipairs(image_extensions) do
+        if extension:lower() == ext then
+            is_image = true
+            break
+        end
+    end
+    
+    if not is_image then
+        vim.notify("Это не изображение: " .. word_under_cursor, vim.log.levels.WARN)
+        return
+    end
+    
+    -- Проверяем наличие fim
+    if vim.fn.executable('fim') == 0 then
+        vim.notify("fim не установлен!", vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Запускаем fim
+    local cmd = "fim " .. vim.fn.shellescape(full_path) .. " &"
+    os.execute(cmd)
+    vim.notify("Открываю: " .. word_under_cursor)
+end
+
+-- Keymap для файла под курсором
+vim.keymap.set('n', '<leader>ff', open_any_image_fim, { desc = "Open any image under cursor with fim" })
+
+-- Команда для открытия любого изображения
+vim.api.nvim_create_user_command('FimOpen', function(opts)
+    local filename = opts.args
+    if vim.fn.executable('fim') == 1 then
+        os.execute("fim " .. vim.fn.shellescape(filename) .. " &")
+        vim.notify("Открываю: " .. filename)
+    else
+        vim.notify("fim не установлен!", vim.log.levels.ERROR)
+    end
+end, { nargs = 1, desc = "Open image with fim" })
