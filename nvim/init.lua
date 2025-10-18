@@ -132,6 +132,16 @@ require('packer').startup(function(use)
 	use 'hrsh7th/cmp-nvim-lsp'
 	use 'saadparwaiz1/cmp_luasnip'
 
+	use 'nvim-tree/nvim-web-devicons'
+	use 'MunifTanjim/nui.nvim'
+	-- Neo-tree: оставляем только use и branch
+	use {
+
+		'nvim-neo-tree/neo-tree.nvim',
+		branch = 'v3.x',
+		-- dependencies, config, и ключи теперь будут в отдельном файле (или в этом, но в отдельном блоке)
+	}
+
 	-- Gemini AI интеграция
 	use {
 		'David-Kunz/gen.nvim',
@@ -224,6 +234,12 @@ require('packer').startup(function(use)
 	}
 end)
 
+-- ==============================
+-- Neo-tree
+-- ==============================
+require("neo-tree.command").execute({ action = "close" })
+local api = vim.api
+api.nvim_set_keymap('n', '<leader>d', ':Neotree toggle<CR>', { noremap = true, silent = true, desc = 'Toggle Neo-tree' })
 
 -- ==============================
 -- Цветовая схема
