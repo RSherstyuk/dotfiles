@@ -4,12 +4,17 @@
 vim.opt.mouse = "a"
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
+
 vim.opt.number = true
+
 vim.opt.cursorline = false
 vim.opt.swapfile = false
+
 vim.opt.scrolloff = 7
+
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
+
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = false
 vim.opt.autoindent = true
@@ -52,24 +57,6 @@ vim.keymap.set('n', 'gw', ':bp|bd #<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', ',gb', ':Telescope git_branches<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', ',gc', ':Telescope git_commits<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', ',gs', ':Telescope git_status<CR>', { noremap = true, silent = true })
-
--- ==============================
--- NETRW
--- ==============================
-vim.keymap.set('n', '<leader>d', function()
-	if vim.bo.filetype == 'netrw' then
-		vim.cmd('q')
-	else
-		vim.cmd('Vex')
-	end
-end, { noremap = true, silent = true })
-
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = 'netrw',
-	callback = function()
-		vim.keymap.set('n', '<leader>q', ':q<CR>', { buffer = true, noremap = true, silent = true })
-	end,
-})
 
 -- ==============================
 -- Автокоманды
@@ -118,6 +105,14 @@ vim.api.nvim_create_autocmd('FileType', {
 	end,
 })
 
+-- Java
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = 'java',
+	callback = function()
+		vim.keymap.set('n', '<C-h>', ':w<CR>:!javac % && java %:r<CR>', { buffer = true, silent = true })
+		vim.keymap.set('i', '<C-h>', '<Esc>:w<CR>:!javac % && java %:r<CR>', { buffer = true, silent = true })
+	end,
+})
 
 
 
@@ -132,11 +127,39 @@ require('packer').startup(function(use)
 	use 'hrsh7th/cmp-nvim-lsp'
 	use 'saadparwaiz1/cmp_luasnip'
 
-	use 'nvim-tree/nvim-web-devicons'
-	use 'MunifTanjim/nui.nvim'
-	-- Neo-tree: оставляем только use и branch
+	-- Mason - менеджер LSP, линтеров и форматтеров
+
 	use {
 
+		'williamboman/mason.nvim',
+
+		config = function()
+			require('mason').setup()
+		end
+	}
+	use {
+		'williamboman/mason-lspconfig.nvim',
+
+		config = function()
+			require('mason-lspconfig').setup({
+				ensure_installed = { 'jdtls', 'pyright', 'rust_analyzer', 'clangd' },
+				automatic_installation = true,
+			})
+		end
+	}
+
+
+	--JAVA
+	use 'mfussenegger/nvim-jdtls'
+
+
+	use 'nvim-tree/nvim-web-devicons'
+
+	use 'MunifTanjim/nui.nvim'
+
+	-- Neo-tree: оставляем только use и branch
+
+	use {
 		'nvim-neo-tree/neo-tree.nvim',
 		branch = 'v3.x',
 		-- dependencies, config, и ключи теперь будут в отдельном файле (или в этом, но в отдельном блоке)
@@ -247,8 +270,17 @@ api.nvim_set_keymap('n', '<leader>d', ':Neotree toggle<CR>', { noremap = true, s
 vim.cmd([[colorscheme kanagawa-dragon]])
 
 -- ==============================
--- Настройка LSP
+-- LSP НАСТРОЙКА
 -- ==============================
+-- Инициализация Mason
+
+require('mason').setup()
+require('mason-lspconfig').setup({
+
+	ensure_installed = { 'pyright', 'rust_analyzer', 'clangd' },
+	automatic_installation = true,
+})
+
 local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -257,6 +289,7 @@ local on_attach = function(_, bufnr)
 	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
 	vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
 	vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+
 	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
 	vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
 	vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
@@ -275,6 +308,40 @@ vim.diagnostic.config({
 	underline = true,
 	update_in_insert = false,
 	severity_sort = true,
+})
+
+
+-- Настройка LSP серверов вручную
+lspconfig.pyright.setup({
+	capabilities = capabilities,
+	on_attach = on_attach
+})
+
+lspconfig.rust_analyzer.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	settings = {
+		['rust-analyzer'] = {
+			cargo = { allFeatures = true },
+			procMacro = { enable = true },
+		},
+	},
+})
+
+lspconfig.clangd.setup({
+	capabilities = capabilities,
+	cmd = {
+		"clangd",
+		"--background-index",
+		"--clang-tidy",
+		"--header-insertion=never",
+		"--all-scopes-completion"
+
+	},
+
+	filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
+	single_file_support = true,
+	on_attach = on_attach,
 })
 
 -- Серверы
@@ -303,20 +370,15 @@ lspconfig.lua_ls.setup({
 	},
 })
 
-lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach })
-lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach })
-
-lspconfig.clangd.setup({
-	capabilities = capabilities,
-	cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=never", "--all-scopes-completion" },
-	filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
-	single_file_support = true,
-})
-
 -- ==============================
+-- JAVA LSP IMPORT
+-- ==============================
+local jdtls_config = require('config.java') -- 'config.jdtls' соответствует lua/config/jdtls.lua
+
 -- conform.nvim (форматтеры)
 -- ==============================
 require("conform").setup({
+
 	formatters_by_ft = {
 		lua = { "stylua" },
 		python = { "black" },
@@ -324,21 +386,9 @@ require("conform").setup({
 		c = { "clang-format" },
 		cpp = { "clang-format" },
 	},
+
 })
 
--- авто-формат при сохранении
-vim.api.nvim_create_autocmd("BufWritePre", {
-	callback = function(args)
-		require("conform").format({ bufnr = args.buf })
-	end,
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = { "*.c", "*.cpp", "*.h", "*.hpp", "*.java", "*.lua" },
-	callback = function(args)
-		require("conform").format({ bufnr = args.buf, async = false, lsp_format = "fallback", timeout_ms = 2000 })
-	end,
-})
 
 -- ==============================
 -- nvim-lint (линтеры)
@@ -361,6 +411,7 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 -- Telescope
 -- ==============================
 require('telescope').setup({
+
 	defaults = {
 		file_ignore_patterns = { "%.pyc$", "__pycache__/", "%.pyo$", "%.class$", "build/", "target/" },
 	},
@@ -386,6 +437,7 @@ cmp.setup({
 		['<C-n>'] = cmp.mapping.select_next_item(),
 		['<Up>'] = cmp.mapping.select_prev_item(),
 		['<Down>'] = cmp.mapping.select_next_item(),
+
 	},
 	sources = cmp.config.sources({ { name = 'nvim_lsp' } }),
 })
@@ -399,6 +451,7 @@ vim.cmd([[
   highlight LineNr guibg=NONE ctermbg=NONE
   highlight EndOfBuffer guibg=NONE ctermbg=NONE
 ]])
+
 
 -- ==============================
 -- LuaSnip settings
@@ -446,6 +499,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 			vim.notify("jupytext (Python) is not installed! Run `pip install jupytext`.", vim.log.levels.ERROR)
 		end
 	end,
+
 })
 
 -- Горячие клавиши для работы с ячейками (Molten)

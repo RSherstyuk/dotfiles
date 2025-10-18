@@ -32,21 +32,23 @@ require('neo-tree').setup({
 	-- 3. Настройки окна (внешний вид и привязки)
 	window = {
 
+
 		position = "left",
 		width = 35,
 		mappings = {
 			["l"] = "open",
-
 			["h"] = "close_node",
 
-
 			["<cr>"] = "open",
+
 			["A"] = "add_directory",
 			["a"] = "add_file",
 			["d"] = "delete",
 			["r"] = "rename",
+
 			["y"] = "copy_to_clipboard",
-			-- P: (Preview) полезная привязка для предварительного просмотра
+			["p"] = "paste_from_clipboard",
+			["H"] = "toggle_hidden",
 
 			["t"] = "open_in_tab",
 			["P"] = { "toggle_preview", config = { use_float = false } },
