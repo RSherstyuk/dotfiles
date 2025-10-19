@@ -49,14 +49,6 @@ vim.keymap.set("n", ",f", ":Telescope find_files<CR>", { noremap = true })
 vim.keymap.set("n", ",g", ":Telescope live_grep<CR>", { noremap = true })
 vim.keymap.set("n", "gw", ":bp|bd #<CR>", { noremap = true, silent = true })
 
--- Git через Telescope
-vim.keymap.set("n", ",gb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", ",gc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
-
-vim.keymap.set("n", ",gs", ":Telescope git_status<CR>", { noremap = true, silent = true })
-
-require("config.aoutocomands")
-
 -- ==============================
 -- Плагины (packer)
 -- ==============================
@@ -68,55 +60,16 @@ require("packer").startup(function(use)
 	use("hrsh7th/cmp-nvim-lsp")
 	use("saadparwaiz1/cmp_luasnip")
 
-	-- Mason - менеджер LSP, линтеров и форматтеров
-	use({
-
-		"williamboman/mason.nvim",
-
-		config = function()
-			require("mason").setup()
-		end,
-	})
-	use({
-		"williamboman/mason-lspconfig.nvim",
-
-		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = { "jdtls", "pyright", "rust_analyzer", "clangd" },
-				automatic_installation = true,
-			})
-		end,
-	})
-
-	use({ "WhoIsSethDaniel/mason-tool-installer.nvim" })
-
 	--JAVA
 	use("mfussenegger/nvim-jdtls")
 
 	use("nvim-tree/nvim-web-devicons")
 	use("MunifTanjim/nui.nvim")
-	-- Neo-tree: оставляем только use и branch
+
 	use({
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
 		-- dependencies, config, и ключи теперь будут в отдельном файле (или в этом, но в отдельном блоке)
-	})
-
-	-- Gemini AI интеграция
-	use({
-
-		"David-Kunz/gen.nvim",
-		config = function()
-			require("gen").setup({
-				model = "gemini-2.5-flash", -- или другая модель Gemini
-				host = "generativelanguage.googleapis.com",
-
-				port = "443",
-				path = "/v1beta/models/",
-
-				-- Дополнительные настройки...
-			})
-		end,
 	})
 
 	use({
@@ -163,8 +116,8 @@ require("packer").startup(function(use)
 	})
 
 	-- Telescope
-	use("nvim-telescope/telescope.nvim")
-	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	--use("nvim-telescope/telescope.nvim")
+	--use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 
 	-- Utils
 	use("Pocco81/auto-save.nvim")
@@ -201,9 +154,9 @@ require("packer").startup(function(use)
 	})
 end)
 
--- ==============================
--- Neo-tree
--- ==============================
+-- =============================
+-- Neo-Tree
+-- =============================
 require("neo-tree.command").execute({ action = "close" })
 
 local api = vim.api
@@ -220,14 +173,9 @@ api.nvim_set_keymap(
 vim.cmd([[colorscheme kanagawa-dragon]])
 
 -- ==============================
--- LSP CONFIG
+-- LSP
 -- ==============================
-require("config.lsp")
-
--- ==============================
--- JAVA LSP IMPORT
--- ==============================
-local jdtls_config = require("config.java") -- 'config.jdtls' соответствует lua/config/jdtls.lua
+require("config.lsp_config").setup()
 
 -- ==============================
 -- FORMATTERS & LINTERS
@@ -235,16 +183,15 @@ local jdtls_config = require("config.java") -- 'config.jdtls' соответст
 require("config.formatters")
 require("config.linters")
 
--- ==============================
--- Telescope
--- ==============================
-
-require("telescope").setup({
-	defaults = {
-		file_ignore_patterns = { "%.pyc$", "__pycache__/", "%.pyo$", "%.class$", "build/", "target/" },
-	},
-})
-require("telescope").load_extension("fzf")
+-- -- ==============================
+-- -- Java
+-- -- ==============================
+-- local jdtls_config_success, jdtls_config = pcall(require, "config.java")
+--
+-- if jdtls_config_success and jdtls_config.setup then
+-- 	-- Вызываем функцию без аргументов!
+-- 	jdtls_config.setup()
+-- end
 
 -- ==============================
 -- Auto-save
@@ -269,75 +216,3 @@ cmp.setup({
 	},
 	sources = cmp.config.sources({ { name = "nvim_lsp" } }),
 })
-
--- ==============================
--- Transparent background
--- ==============================
-vim.cmd([[
-  highlight Normal guibg=NONE ctermbg=NONE
-  highlight NonText guibg=NONE ctermbg=NONE
-  highlight LineNr guibg=NONE ctermbg=NONE
-  highlight EndOfBuffer guibg=NONE ctermbg=NONE
-]])
-
--- ==============================
--- LuaSnip settings
--- ==============================
-require("luasnip").config.set_config({
-
-	history = true,
-	updateevents = "TextChanged,TextChangedI",
-})
-
--- Настройка gitsigns.nvim
-require("gitsigns").setup({
-	signs = {
-		add = { hl = "GitGutterAdd", text = "+" },
-		change = { hl = "GitGutterChange", text = "~" },
-		delete = { hl = "GitGutterDelete", text = "_" },
-
-		topdelete = { hl = "GitGutterDeleteChange", text = "‾" },
-
-		changedelete = { hl = "GitGutterChange", text = "~" },
-	},
-	current_line_blame = false,
-})
-
--- Настройка lualine для ветки git
-require("lualine").setup({
-	options = {
-		theme = "gruvbox",
-
-		section_separators = "",
-
-		component_separators = "",
-	},
-	sections = {
-		lualine_a = { "mode" },
-		lualine_b = { "branch", "diff", "diagnostics" },
-		lualine_c = { "filename" },
-		lualine_x = { "encoding", "fileformat", "filetype" },
-		lualine_y = { "progress" },
-		lualine_z = { "location" },
-	},
-})
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-
-	pattern = "*.ipynb",
-	callback = function()
-		if vim.fn.executable("jupytext") == 1 then
-			vim.cmd("JupytextLoad")
-		else
-			vim.notify("jupytext (Python) is not installed! Run `pip install jupytext`.", vim.log.levels.ERROR)
-		end
-	end,
-})
-
--- Горячие клавиши для работы с ячейками (Molten)
-vim.keymap.set("n", "<leader>rr", ":MoltenEvaluateLine<CR>", { noremap = true, silent = true })
-vim.keymap.set("v", "<leader>rr", ":<C-u>MoltenEvaluateVisual<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>rc", ":MoltenEvaluateCell<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ra", ":MoltenEvaluateBuffer<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ro", ":MoltenShowOutput<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>rk", ":MoltenRestart<CR>", { noremap = true, silent = true })
