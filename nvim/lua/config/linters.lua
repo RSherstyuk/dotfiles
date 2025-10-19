@@ -1,5 +1,4 @@
 -- ============================
-
 -- ЛИНТЕРЫ (nvim-lint)
 -- ============================
 
@@ -22,17 +21,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 	callback = function()
 		require("lint").try_lint()
 	end,
-})
-
--- Добавляем установку линтеров в Mason Tool Installer
-require("mason-tool-installer").setup({
-	ensure_installed = {
-		"pylint",
-		"eslint_d",
-		"checkstyle",
-		-- "luacheck",
-		-- "clang-tidy",
-	},
 })
 
 -- Дополнительно: делаем диагностику более читаемой

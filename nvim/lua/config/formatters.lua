@@ -1,5 +1,4 @@
 -- ============================
-
 -- ФОРМАТТЕРЫ (conform.nvim)
 -- ============================
 
@@ -10,11 +9,8 @@ conform.setup({
 		lua = { "stylua" },
 		python = { "black" },
 		javascript = { "prettier" },
-
 		c = { "clang-format" },
-
 		cpp = { "clang-format" },
-
 		java = { "google-java-format" },
 	},
 })
@@ -31,17 +27,4 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 			timeout_ms = 2000,
 		})
 	end,
-})
-
--- Интеграция с Mason Tool Installer
-require("mason-tool-installer").setup({
-	ensure_installed = {
-		"stylua",
-
-		"black",
-		"prettier",
-
-		"clang-format",
-		"google-java-format",
-	},
 })

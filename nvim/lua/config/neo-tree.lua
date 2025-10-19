@@ -1,8 +1,4 @@
 -- Файл: lua/config/neo-tree.lua
-
--- Конфигурация neo-tree
--- Здесь мы используем require('neo-tree').setup, чтобы настроить плагин
--- после того, как packer его загрузит
 require('neo-tree').setup({
 	-- 1. Определяем, какие "источники" будут доступны
 	sources = { "filesystem", "buffers", "git_status" },
@@ -10,18 +6,22 @@ require('neo-tree').setup({
 	-- 2. Настройки файловой системы
 	filesystem = {
 		bind_to_cwd = true,
+
 		follow_current_file = {
 
 			enabled = true,
 			auto_open_detect = false,
 
+
 		},
 		filtered_items = {
 			hide_dotfiles = true,
+
 			hide_gitignored = true,
 			never_show = {
 
 				".DS_Store",
+
 				"thumbs.db",
 				"node_modules",
 			},
@@ -37,7 +37,9 @@ require('neo-tree').setup({
 		width = 35,
 		mappings = {
 			["l"] = "open",
+
 			["h"] = "close_node",
+
 
 			["<cr>"] = "open",
 
@@ -75,3 +77,4 @@ require('neo-tree').setup({
 	},
 
 })
+
