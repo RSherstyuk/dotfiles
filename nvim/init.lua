@@ -206,3 +206,8 @@ require("auto-save").setup()
 -- nvim-cmp
 -- ==============================
 require("config.cmp")
+
+-- ==============================
+-- Настройка gitsigns.nvim
+-- ==============================
+require("config.git")

@@ -116,3 +116,40 @@ alias ai='aider --model gemini/gemini-2.5-flash'
 
 alias python=python3
 alias open=explorer.exe
+
+export PATH="$HOME/.local/bin:$PATH"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+
+#GIT ALIAS
+# Git Алиасы
+alias gs='git status -sb'                                    # Статус (кратко)
+alias ga='git add'                                            # Добавить
+alias gaa='git add .'                                         # Добавить все в текущей директории
+alias gco='git checkout'                                      # Переключить ветку
+alias gcob='git checkout -b'                                  # Создать и переключить на новую ветку
+alias gc='git commit -m'                                      # Закоммитить с сообщением
+alias gca='git commit -am'                                    # Закоммитить все отслеживаемые изменения с сообщением
+alias gp='git push'                                           # Отправить (push)
+alias gpf='git push --force-with-lease'                       # Отправить (force-with-lease)
+
+alias gpl='git pull'                                          # Получить (pull)
+alias gl='git log --oneline --decorate --graph --all'         # Лог (графически)
+alias gb='git branch'                                         # Список веток
+alias gba='git branch -a'                                     # Список всех веток (локальных и удаленных)
+
+alias gm='git merge'                                          # Слияние
+alias gr='git reset'                                          # Сброс
+alias grh='git reset --hard'                                  # Сброс (жесткий)
+alias gd='git diff'                                           # Разница
+alias gds='git diff --staged'                                 # Разница между staging и последним коммитом
+alias gsh='git show'                                          # Показать информацию об объекте (например, коммите)
+alias gcl='git clone'                                         # Клонировать репозиторий
+alias gf='git fetch'                                          # Получить удаленные изменения
+alias grb='git rebase'                                        # Перебазирование
+
