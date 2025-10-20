@@ -66,16 +66,6 @@ M.setup = function()
 
 	lspconfig.pyright.setup({
 		on_attach = on_attach,
-		settings = {
-			python = {
-				pythonPath = ".venv/bin/python", -- Linux/macOS
-				analysis = {
-					autoSearchPaths = true,
-					useLibraryCodeForTypes = true,
-					diagnosticMode = "openFilesOnly",
-				},
-			},
-		},
 	})
 
 	lspconfig.ts_ls.setup({ capabilities = capabilities, on_attach = on_attach })

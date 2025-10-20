@@ -181,17 +181,16 @@ require("config.lsp_config").setup()
 -- FORMATTERS & LINTERS
 -- ==============================
 require("config.formatters")
-require("config.linters")
+-- require("config.linters")
 
--- -- ==============================
--- -- Java
--- -- ==============================
--- local jdtls_config_success, jdtls_config = pcall(require, "config.java")
---
--- if jdtls_config_success and jdtls_config.setup then
--- 	-- Вызываем функцию без аргументов!
--- 	jdtls_config.setup()
--- end
+-- ==============================
+-- Java
+-- ==============================
+local jdtls_config_success, jdtls_config = pcall(require, "config.java")
+
+if jdtls_config_success and jdtls_config.setup then
+	jdtls_config.setup()
+end
 
 -- ==============================
 -- Auto-save
