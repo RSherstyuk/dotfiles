@@ -154,3 +154,5 @@ alias gcl='git clone'                                         # Клониров
 alias gf='git fetch'                                          # Получить удаленные изменения
 alias grb='git rebase'                                        # Перебазирование
 
+#IPyNb convert
+alias jtp='jupytext --to ipynb'
