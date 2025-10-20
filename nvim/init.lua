@@ -185,7 +185,6 @@ require("config.formatters")
 -- Java
 -- ==============================
 local jdtls_config_success, jdtls_config = pcall(require, "config.java")
-
 if jdtls_config_success and jdtls_config.setup then
 	jdtls_config.setup()
 end
