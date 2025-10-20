@@ -69,7 +69,12 @@ require("packer").startup(function(use)
 	use({
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
-		-- dependencies, config, и ключи теперь будут в отдельном файле (или в этом, но в отдельном блоке)
+
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- Важно, чтобы этот плагин был в зависимостях
+			"MunifTanjim/nui.nvim",
+		},
 	})
 
 	use({
