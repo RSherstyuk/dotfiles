@@ -133,6 +133,7 @@ alias ga='git add'                                            # Добавить
 alias gaa='git add .'                                         # Добавить все в текущей директории
 alias gco='git checkout'                                      # Переключить ветку
 alias gcob='git checkout -b'                                  # Создать и переключить на новую ветку
+alias gcm='git checkout master'
 alias gc='git commit -m'                                      # Закоммитить с сообщением
 alias gca='git commit -am'                                    # Закоммитить все отслеживаемые изменения с сообщением
 alias gp='git push'                                           # Отправить (push)
