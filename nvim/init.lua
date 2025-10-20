@@ -120,9 +120,9 @@ require("packer").startup(function(use)
 		end,
 	})
 
-	-- Telescope
-	--use("nvim-telescope/telescope.nvim")
-	--use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	--Telescope
+	use("nvim-telescope/telescope.nvim")
+	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 
 	-- Utils
 	use("Pocco81/auto-save.nvim")
