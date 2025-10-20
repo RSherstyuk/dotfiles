@@ -211,3 +211,8 @@ require("config.cmp")
 -- Настройка gitsigns.nvim
 -- ==============================
 require("config.git")
+
+-- ==============================
+-- IPyNb
+-- ==============================
+require("config.ipy")
