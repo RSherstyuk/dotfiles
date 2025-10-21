@@ -1,5 +1,5 @@
 -- Файл: lua/config/neo-tree.lua
-require('neo-tree').setup({
+require("neo-tree").setup({
 	-- 1. Определяем, какие "источники" будут доступны
 	sources = { "filesystem", "buffers", "git_status" },
 
@@ -11,8 +11,6 @@ require('neo-tree').setup({
 
 			enabled = true,
 			auto_open_detect = false,
-
-
 		},
 		filtered_items = {
 			hide_dotfiles = true,
@@ -28,10 +26,8 @@ require('neo-tree').setup({
 		},
 	},
 
-
 	-- 3. Настройки окна (внешний вид и привязки)
 	window = {
-
 
 		position = "left",
 		width = 35,
@@ -39,7 +35,6 @@ require('neo-tree').setup({
 			["l"] = "open",
 
 			["h"] = "close_node",
-
 
 			["<cr>"] = "open",
 
@@ -50,6 +45,7 @@ require('neo-tree').setup({
 
 			["y"] = "copy_to_clipboard",
 			["p"] = "paste_from_clipboard",
+
 			["H"] = "toggle_hidden",
 
 			["t"] = "open_in_tab",
@@ -75,6 +71,4 @@ require('neo-tree').setup({
 			end,
 		},
 	},
-
 })
-

@@ -4,20 +4,21 @@
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
-vim.keymap.set("n", "<leader>e", ":Neotree toggle reveal<CR>", { desc = "Toggle Neo-tree and Reveal File" })
-vim.keymap.set("i", "jk", "<Esc>", { noremap = true })
-vim.keymap.set("n", ",<Space>", ":nohlsearch<CR>", { noremap = true })
-vim.keymap.set("n", "H", "gT", { noremap = true })
-vim.keymap.set("n", "L", "gt", { noremap = true })
+keymap("i", "jk", "<Esc>", { noremap = true })
+keymap("n", ",<Space>", ":nohlsearch<CR>", { noremap = true })
+keymap("n", "H", "gT", { noremap = true })
+keymap("n", "L", "gt", { noremap = true })
 
-vim.keymap.set("n", ",f", ":Telescope find_files<CR>", { noremap = true })
-vim.keymap.set("n", ",g", ":Telescope live_grep<CR>", { noremap = true })
-vim.keymap.set("n", "gw", ":bp|bd #<CR>", { noremap = true, silent = true })
+keymap("n", ",ff", ":Telescope find_files<CR>", { noremap = true })
+keymap("n", ",g", ":Telescope live_grep<CR>", { noremap = true })
+keymap("n", "gw", ":bp|bd #<CR>", { noremap = true, silent = true })
 
--- Git через Telescope
-vim.keymap.set("n", ",gb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", ",gc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", ",gs", ":Telescope git_status<CR>", { noremap = true, silent = true })
+-- Git with Telescope
+keymap("n", ",gb", ":Telescope git_branches<CR>", { noremap = true, silent = true })
+keymap("n", ",gc", ":Telescope git_commits<CR>", { noremap = true, silent = true })
+keymap("n", ",gs", ":Telescope git_status<CR>", { noremap = true, silent = true })
+
+keymap("n", "<leader>e", ":Neotree toggle reveal<CR>", { desc = "Toggle Neo-tree and Reveal File" })
 
 -- Фолдинг
 keymap("n", "<leader>zR", "zR", opts) -- раскрыть все

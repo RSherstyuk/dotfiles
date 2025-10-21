@@ -1,6 +1,5 @@
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = "*.ipynb",
-
 	callback = function()
 		if vim.fn.executable("jupytext") == 1 then
 			vim.cmd("JupytextLoad")
@@ -12,9 +11,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 
 -- Горячие клавиши для работы с ячейками (Molten)
 vim.keymap.set("n", "<leader>rr", ":MoltenEvaluateLine<CR>", { noremap = true, silent = true })
-
 vim.keymap.set("v", "<leader>rr", ":<C-u>MoltenEvaluateVisual<CR>", { noremap = true, silent = true })
-
 vim.keymap.set("n", "<leader>rc", ":MoltenEvaluateCell<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>ra", ":MoltenEvaluateBuffer<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>ro", ":MoltenShowOutput<CR>", { noremap = true, silent = true })

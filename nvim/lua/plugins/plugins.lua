@@ -1,10 +1,15 @@
 -- ==============================
 -- Плагины (packer)
 -- ==============================
-require("packer").startup(function(use)
+local use = require("packer").use
+
+local dap_plugins = require("plugins.dap")
+local mason_tool = require("plugins.mason-tool")
+local mason = require("plugins.mason")
+
+require("packer").startup(function()
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
-
 	use("neovim/nvim-lspconfig")
 	use("hrsh7th/nvim-cmp")
 	use("hrsh7th/cmp-nvim-lsp")
@@ -12,6 +17,23 @@ require("packer").startup(function(use)
 
 	--JAVA
 	use("mfussenegger/nvim-jdtls")
+	use("tpope/vim-dispatch")
+
+	--------------------------------------------------
+	-- 1. Добавление плагинов из dap.lua
+	--------------------------------------------------
+	for _, plugin in ipairs(dap_plugins) do
+		use(plugin)
+	end
+	--------------------------------------------------
+
+	for _, plugin in ipairs(mason_tool) do
+		use(plugin)
+	end
+
+	for _, plugin in ipairs(mason) do
+		use(plugin)
+	end
 
 	use("nvim-tree/nvim-web-devicons")
 
@@ -25,7 +47,6 @@ require("packer").startup(function(use)
 				size = 20,
 				open_mapping = [[<C-t>]], -- Замените на удобную для вас комбинацию
 				direction = "float", -- 'float' для плавающего, 'vertical' или 'horizontal' для сплита
-
 				float_opts = {
 					border = "curved",
 				},
@@ -39,9 +60,7 @@ require("packer").startup(function(use)
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
 		dependencies = {
-
 			"nvim-lua/plenary.nvim",
-
 			"nvim-tree/nvim-web-devicons", -- Важно, чтобы этот плагин был в зависимостях
 
 			"MunifTanjim/nui.nvim",
@@ -82,7 +101,6 @@ require("packer").startup(function(use)
 
 	-- UFO (умный фолдинг)
 	use({
-
 		"kevinhwang91/nvim-ufo",
 		requires = "kevinhwang91/promise-async",
 		config = function()
@@ -98,7 +116,6 @@ require("packer").startup(function(use)
 	use("rebelot/kanagawa.nvim")
 
 	-- Comments
-
 	use({
 		"numToStr/Comment.nvim",
 		config = function()

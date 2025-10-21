@@ -37,16 +37,13 @@ vim.g.clipboard = {
 }
 -- ==============================
 
+vim.cmd([[packadd packer.nvim]])
+require("plugins.plugins")
+
 -- ==============================
 -- Keymaps
 -- ==============================
 require("config.keymaps")
-
--- =============================
--- Packer
--- =============================
-vim.cmd([[packadd packer.nvim]])
-require("plugins.plugins")
 
 -- =============================
 -- Neo-Tree
@@ -61,6 +58,11 @@ api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "Toggle Neo-tree" }
 )
 
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+vim.o.foldlevel = 99
+vim.o.foldenable = true
+
 -- ==============================
 -- Цветовая схема
 -- ==============================
@@ -71,9 +73,9 @@ vim.cmd([[colorscheme kanagawa-dragon]])
 -- ==============================
 require("config.lsp_config").setup()
 
--- ==============================
--- FORMATTERS & LINTERS
--- ==============================
+-- -- ==============================
+-- -- FORMATTERS & LINTERS
+-- -- ==============================
 require("config.formatters")
 -- require("config.linters")
 
@@ -101,6 +103,6 @@ require("config.cmp")
 require("config.git")
 
 -- ==============================
--- IPyNb
+-- IPyNB
 -- ==============================
 require("config.ipy")

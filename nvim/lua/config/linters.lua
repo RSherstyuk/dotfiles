@@ -5,15 +5,9 @@
 local lint = require("lint")
 
 lint.linters_by_ft = {
-	-- lua = { "luacheck" },
 	python = { "pylint" },
-
 	javascript = { "eslint_d" },
-
 	java = { "checkstyle" },
-
-	-- c = { "clangtidy" },
-	-- cpp = { "clangtidy" },
 }
 
 -- Автоматически запускать линтер при сохранении

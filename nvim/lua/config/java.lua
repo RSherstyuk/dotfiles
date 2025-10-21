@@ -5,6 +5,10 @@ local Path = require("plenary.path")
 local jdtls = require("jdtls")
 local core = require("config.core")
 
+local function get_install_path_for(package)
+	return vim.fn.expand("$MASON/packages/" .. package)
+end
+
 local M = {}
 
 local last_java_test_command = nil
@@ -103,29 +107,39 @@ function M.setup()
 			return false
 		end
 
-		-- TODO: Проверь этот путь к lombok.jar. Он может лежать в /plugins/ или в другом месте.
 		local lombok_jar = jdtls_dir .. "/bin/lombok.jar"
 
-		-- TODO: Эти пути для ручной установки. Убедись, что бандлы лежат здесь.
-		-- Возможно, тебе нужно установить java-debug-adapter и java-test вручную
-		-- и прописать пути к их .jar файлам.
-		local java_debug_adapter_path = home .. "/.local/share/nvim/lsp_servers/java-debug-adapter"
+		local java_debug_adapter_path = home .. "/.local/share/nvim/lsp_servers/java-debug"
 		local java_test_path = home .. "/.local/share/nvim/lsp_servers/java-test"
 
-		local bundles = vim.iter({
-			vim.fn.glob(java_debug_adapter_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", 1, true),
-			vim.fn.glob(java_test_path .. "/extension/server/*.jar", 1, true),
-		})
-			:flatten()
-			:totable()
+		local debug_jars = vim.split(
+			vim.fn.glob(
+				java_debug_adapter_path
+					.. "/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
+			),
+			"\n"
+		)
 
-		-- Добавляем бандлы, только если они найдены
+		local test_plugin_jar =
+			vim.split(vim.fn.glob(java_test_path .. "/server/com.microsoft.java.test.plugin-*.jar"), "\n")
+		local test_runner_jar = vim.split(
+			vim.fn.glob(java_test_path .. "/server/com.microsoft.java.test.runner-jar-with-dependencies.jar"),
+			"\n"
+		)
+
 		local init_options_bundles = {}
-		for _, bundle_path in ipairs(bundles) do
-			if bundle_path and bundle_path ~= "" then
-				table.insert(init_options_bundles, bundle_path)
+
+		local function add_bundles(jar_list)
+			for _, jar_path in ipairs(jar_list) do
+				if jar_path and jar_path ~= "" then
+					table.insert(init_options_bundles, jar_path)
+				end
 			end
 		end
+
+		add_bundles(debug_jars)
+		add_bundles(test_plugin_jar)
+		add_bundles(test_runner_jar)
 
 		local config_dir = jdtls_dir .. "/config_linux"
 		local workspace_dir = home .. "/.cache/jdtls-workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -233,11 +247,28 @@ function M.setup()
 				},
 			},
 			init_options = {
-				bundles = init_options_bundles,
+				bundles = vim.iter({
+					core.string_split(
+						vim.fn.glob(
+							get_install_path_for("java-debug-adapter")
+								.. "/extension/server/"
+								.. "com.microsoft.java.debug.plugin-*.jar",
+							1
+						),
+						"\n"
+					),
+					core.string_split(
+						vim.fn.glob(get_install_path_for("java-test") .. "/extension/server/" .. "*.jar", 1),
+						"\n"
+					),
+				})
+					:flatten()
+					:totable(),
 			},
 		}
 
 		jdtls.start_or_attach(jdtls_config)
+
 		return true
 	end
 
@@ -262,6 +293,83 @@ function M.setup()
 			vim.keymap.set("n", "<leader>je", '<CMD>lua require("jdtls").extract_variable()<CR>', opts)
 			vim.keymap.set("x", "<leader>jm", '<Esc><CMD>lua require("jdtls").extract_method(true)<CR>', opts)
 			vim.keymap.set("n", "<leader>jc", jdtls.compile, opts)
+
+			vim.api.nvim_buf_create_user_command(0, "JavaTestAll", function()
+				-- Run all tests in the project
+				local cmd = "./gradlew test"
+				last_java_test_command = cmd
+				vim.cmd.Dispatch({ last_java_test_command })
+			end, {
+				desc = "run test for all packages",
+			})
+
+			vim.api.nvim_buf_create_user_command(0, "JavaTestFile", function()
+				local cmd = "./gradlew test --tests " .. vim.fn.expand("%:t:r")
+				last_java_test_command = cmd
+				vim.cmd.Dispatch({ last_java_test_command })
+			end, {
+				desc = "run test for a file",
+			})
+
+			vim.api.nvim_buf_create_user_command(0, "JavaTestFunction", function()
+				local cwf = vim.fn.expand("%:.")
+
+				if not string.find(cwf, "Test%.java$") then
+					vim.notify("Not a test file")
+					return
+				end
+
+				local test_name = nil
+				local node = vim.treesitter.get_node()
+				while node do
+					test_name = get_test_name(node)
+					if test_name then
+						break
+					end
+					node = node:parent()
+				end
+
+				if not test_name then
+					vim.notify("Test function was not found")
+
+					return
+				end
+
+				local cmd = "./gradlew test --tests " .. vim.fn.expand("%:t:r") .. "." .. test_name
+
+				last_java_test_command = cmd
+				vim.cmd.Dispatch({ last_java_test_command })
+			end, {
+				desc = "run test for a function",
+			})
+
+			vim.api.nvim_buf_create_user_command(0, "JavaTestLast", function(opts)
+				if last_java_test_command then
+					vim.cmd.Dispatch({ last_java_test_command })
+				else
+					vim.notify("No previous Java test command to run", vim.log.levels.WARN)
+				end
+			end, {
+
+				desc = "run the last test command again",
+			})
+
+			vim.api.nvim_buf_create_user_command(0, "JavaToggleTest", function()
+				local cwf = vim.fn.expand("%:.")
+				local change_to = cwf
+
+				if string.find(cwf, "/main/java/") then
+					change_to = string.gsub(change_to, "/main/java/", "/test/java/")
+					change_to = string.gsub(change_to, "(%w+)%.java$", "%1Test.java")
+					vim.cmd("edit " .. change_to)
+				elseif string.find(cwf, "/test/java/") then
+					change_to = string.gsub(change_to, "/test/java/", "/main/java/")
+					change_to = string.gsub(change_to, "(%w+)Test%.java$", "%1.java")
+					vim.cmd("edit " .. change_to)
+				end
+			end, {
+				desc = "toggle between test and source code",
+			})
 
 			-- Кастомные команды для тестов
 			vim.keymap.set(
@@ -296,6 +404,7 @@ function M.setup()
 			)
 
 			-- Встроенные jdtls функции
+
 			vim.keymap.set("n", "<localleader>oi", function()
 				jdtls.organize_imports()
 			end, { desc = "organize imports", buffer = true })
@@ -364,78 +473,5 @@ function M.setup()
 		end,
 	})
 end
-
-vim.api.nvim_buf_create_user_command(0, "JavaTestAll", function()
-	-- Run all tests in the project
-	local cmd = "./gradlew test"
-	last_java_test_command = cmd
-	vim.cmd.Dispatch({ last_java_test_command })
-end, {
-	desc = "run test for all packages",
-})
-
-vim.api.nvim_buf_create_user_command(0, "JavaTestFile", function()
-	local cmd = "./gradlew test --tests " .. vim.fn.expand("%:t:r")
-	last_java_test_command = cmd
-	vim.cmd.Dispatch({ last_java_test_command })
-end, {
-	desc = "run test for a file",
-})
-
-vim.api.nvim_buf_create_user_command(0, "JavaTestFunction", function()
-	local cwf = vim.fn.expand("%:.")
-
-	if not string.find(cwf, "Test%.java$") then
-		vim.notify("Not a test file")
-		return
-	end
-
-	local test_name = nil
-	local node = vim.treesitter.get_node()
-	while node do
-		test_name = get_test_name(node)
-		if test_name then
-			break
-		end
-		node = node:parent()
-	end
-
-	if not test_name then
-		vim.notify("Test function was not found")
-		return
-	end
-
-	local cmd = "./gradlew test --tests " .. vim.fn.expand("%:t:r") .. "." .. test_name
-	last_java_test_command = cmd
-	vim.cmd.Dispatch({ last_java_test_command })
-end, {
-	desc = "run test for a function",
-})
-
-vim.api.nvim_buf_create_user_command(0, "JavaTestLast", function(opts)
-	if last_java_test_command then
-		vim.cmd.Dispatch({ last_java_test_command })
-	else
-		vim.notify("No previous Java test command to run", vim.log.levels.WARN)
-	end
-end, {
-	desc = "run the last test command again",
-})
-
-vim.api.nvim_buf_create_user_command(0, "JavaToggleTest", function()
-	local cwf = vim.fn.expand("%:.")
-	local change_to = cwf
-	if string.find(cwf, "/main/java/") then
-		change_to = string.gsub(change_to, "/main/java/", "/test/java/")
-		change_to = string.gsub(change_to, "(%w+)%.java$", "%1Test.java")
-		vim.cmd("edit " .. change_to)
-	elseif string.find(cwf, "/test/java/") then
-		change_to = string.gsub(change_to, "/test/java/", "/main/java/")
-		change_to = string.gsub(change_to, "(%w+)Test%.java$", "%1.java")
-		vim.cmd("edit " .. change_to)
-	end
-end, {
-	desc = "toggle between test and source code",
-})
 
 return M

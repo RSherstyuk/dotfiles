@@ -1,5 +1,4 @@
 local cmp = require("cmp")
-
 cmp.setup({
 	completion = { autocomplete = false },
 	mapping = {
@@ -7,7 +6,6 @@ cmp.setup({
 		["<C-e>"] = cmp.mapping.abort(),
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
 		["<C-p>"] = cmp.mapping.select_prev_item(),
-
 		["<C-n>"] = cmp.mapping.select_next_item(),
 		["<Up>"] = cmp.mapping.select_prev_item(),
 		["<Down>"] = cmp.mapping.select_next_item(),
