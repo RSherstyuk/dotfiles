@@ -20,17 +20,19 @@ require("packer").startup(function()
 	use("tpope/vim-dispatch")
 
 	--------------------------------------------------
-	-- 1. Добавление плагинов из dap.lua
+	-- dap.lua
 	--------------------------------------------------
 	for _, plugin in ipairs(dap_plugins) do
 		use(plugin)
 	end
 	--------------------------------------------------
 
+	-- Mason tools
 	for _, plugin in ipairs(mason_tool) do
 		use(plugin)
 	end
 
+	-- Mason config
 	for _, plugin in ipairs(mason) do
 		use(plugin)
 	end

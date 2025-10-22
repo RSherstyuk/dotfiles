@@ -1,6 +1,4 @@
 -- lua/lsp_config.lua
-
--- Функция для настройки LSP, которую мы вызовем из init.lua
 local M = {}
 
 M.setup = function()
@@ -9,6 +7,7 @@ M.setup = function()
 	-- ==============================
 	local lspconfig = require("lspconfig")
 	-- Убедитесь, что 'cmp_nvim_lsp' установлен, если вы его используете.
+
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 	local on_attach = function(_, bufnr)
@@ -17,6 +16,7 @@ M.setup = function()
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 		vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+
 		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
 		vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
 		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
@@ -48,6 +48,7 @@ M.setup = function()
 		settings = {
 			Lua = {
 				runtime = {
+
 					version = "LuaJIT",
 				},
 				diagnostics = {
