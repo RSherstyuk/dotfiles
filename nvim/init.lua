@@ -48,6 +48,7 @@ require("config.keymaps")
 -- =============================
 -- Neo-Tree
 -- =============================
+require("config.neo-tree")
 require("neo-tree.command").execute({ action = "close" })
 
 local api = vim.api

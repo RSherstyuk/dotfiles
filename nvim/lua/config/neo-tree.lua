@@ -27,19 +27,17 @@ require("neo-tree").setup({
 	},
 
 	-- 3. Настройки окна (внешний вид и привязки)
+
 	window = {
 
 		position = "left",
 		width = 35,
 		mappings = {
 			["l"] = "open",
-
 			["h"] = "close_node",
-
 			["<cr>"] = "open",
-
 			["A"] = "add_directory",
-			["a"] = "add_file",
+			["a"] = { "add", config = { show_path = "none" } },
 			["d"] = "delete",
 			["r"] = "rename",
 
@@ -56,12 +54,9 @@ require("neo-tree").setup({
 	-- 4. Автоматическое закрытие и относительные номера строк
 	event_handlers = {
 		{
-			event = "file_opened",
+			event = "neo_tree_buffer_enter",
 			handler = function()
-				local neotree_win = require("neo-tree.utils").find_tree_window()
-				if neotree_win then
-					require("neo-tree.command").execute({ action = "close" })
-				end
+				vim.opt_local.relativenumber = true
 			end,
 		},
 		{
