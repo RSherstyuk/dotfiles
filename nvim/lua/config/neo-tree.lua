@@ -10,6 +10,7 @@ require("neo-tree").setup({
 		follow_current_file = {
 
 			enabled = true,
+
 			auto_open_detect = false,
 		},
 		filtered_items = {
@@ -17,9 +18,7 @@ require("neo-tree").setup({
 
 			hide_gitignored = true,
 			never_show = {
-
 				".DS_Store",
-
 				"thumbs.db",
 				"node_modules",
 			},
@@ -29,7 +28,6 @@ require("neo-tree").setup({
 	-- 3. Настройки окна (внешний вид и привязки)
 
 	window = {
-
 		position = "left",
 		width = 35,
 		mappings = {
@@ -40,18 +38,18 @@ require("neo-tree").setup({
 			["a"] = { "add", config = { show_path = "none" } },
 			["d"] = "delete",
 			["r"] = "rename",
-
 			["y"] = "copy_to_clipboard",
 			["p"] = "paste_from_clipboard",
-
 			["H"] = "toggle_hidden",
+			["P"] = { "toggle_preview", config = { use_float = true } },
+			["t"] = "open_tabnew",
 
-			["t"] = "open_in_tab",
-			["P"] = { "toggle_preview", config = { use_float = false } },
+			["v"] = "open_vsplit",
+
+			["s"] = "open_split",
 		},
 	},
 
-	-- 4. Автоматическое закрытие и относительные номера строк
 	event_handlers = {
 		{
 			event = "neo_tree_buffer_enter",
@@ -59,11 +57,15 @@ require("neo-tree").setup({
 				vim.opt_local.relativenumber = true
 			end,
 		},
-		{
-			event = "neo_tree_buffer_enter",
-			handler = function()
-				vim.opt_local.relativenumber = true -- Включаем relativenumber
-			end,
-		},
 	},
+})
+
+vim.api.nvim_create_autocmd("TabNewEntered", {
+  callback = function()
+    require("neo-tree.command").execute({
+      action = "show",
+      source = "filesystem",
+      position = "left",
+    })
+  end,
 })

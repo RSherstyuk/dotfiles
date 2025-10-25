@@ -14,6 +14,21 @@ require("packer").startup(function()
 	use("hrsh7th/nvim-cmp")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("saadparwaiz1/cmp_luasnip")
+	use({
+		"neovim/nvim-lspconfig",
+		requires = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"hrsh7th/nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
+			"L3MON4D3/LuaSnip", -- Сниппеты
+			"rafamadriz/friendly-snippets",
+
+			"jose-elias-alvarez/null-ls.nvim", -- Для дополнительных фич
+			"jose-elias-alvarez/typescript.nvim", -- Дополнительные TS инструменты
+		},
+	})
+	use("typescript-language-server/typescript-language-server")
 
 	--JAVA
 	use("mfussenegger/nvim-jdtls")
@@ -26,6 +41,16 @@ require("packer").startup(function()
 		use(plugin)
 	end
 	--------------------------------------------------
+	-- use({
+	-- 	"rest-nvim/rest.nvim",
+	-- 	dependencies = {
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 		opts = function(_, opts)
+	-- 			opts.ensure_installed = opts.ensure_installed or {}
+	-- 			table.insert(opts.ensure_installed, "http")
+	-- 		end,
+	-- 	},
+	-- })
 
 	-- Mason tools
 	for _, plugin in ipairs(mason_tool) do
@@ -64,7 +89,6 @@ require("packer").startup(function()
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons", -- Важно, чтобы этот плагин был в зависимостях
-
 			"MunifTanjim/nui.nvim",
 		},
 	})
@@ -146,25 +170,5 @@ require("packer").startup(function()
 	use("tpope/vim-fugitive")
 	use("tpope/vim-rhubarb")
 	use("nvim-lualine/lualine.nvim")
-
-	-- Jupyter / Python Notebooks
-	use({
-		"GCBallesteros/jupytext.nvim",
-		config = function()
-			require("jupytext").setup({
-				style = "hydrogen",
-				output_extension = "ipynb",
-				force_ft = "python",
-			})
-		end,
-	})
-
-	use({
-		"benlubas/molten-nvim",
-		run = ":UpdateRemotePlugins",
-		config = function()
-			vim.g.molten_output_win_max_height = 20
-			vim.g.molten_auto_open_output = true
-		end,
-	})
+	-- use("luk400/vim-jukit")
 end)

@@ -6,6 +6,7 @@ require("conform").setup({
 		typescript = { "prettier" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
+		json = { "prettier" },
 		java = {},
 	},
 })
@@ -22,16 +23,16 @@ end, {
 })
 
 -- Автоформат при сохранении
-vim.api.nvim_create_autocmd("BufWritePre", {
-
-	pattern = "*",
-	callback = function(args)
-		require("conform").format({
-			bufnr = args.buf,
-
-			async = false,
-			lsp_format = "fallback",
-			timeout_ms = 2000,
-		})
-	end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--
+-- 	pattern = "*",
+-- 	callback = function(args)
+-- 		require("conform").format({
+-- 			bufnr = args.buf,
+--
+-- 			async = false,
+-- 			lsp_format = "fallback",
+-- 			timeout_ms = 2000,
+-- 		})
+-- 	end,
+-- })

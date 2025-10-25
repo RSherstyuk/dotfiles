@@ -22,6 +22,20 @@ vim.opt.relativenumber = true
 vim.g.mapleader = ","
 vim.opt.clipboard = "unnamedplus"
 
+-- Горячие клавиши для работы с ячейками (Molten)
+vim.keymap.set("n", "<leader>mi", ":MoltenInit<CR>", { silent = true, desc = "Инициализировать kernel" })
+vim.keymap.set("n", "<leader>mr", ":MoltenEvaluateOperator<CR>", { desc = "Выполнить оператор" })
+vim.keymap.set("n", "<leader>mrr", ":MoltenEvaluateLine<CR>", { desc = "Выполнить строку" })
+vim.keymap.set("v", "<leader>mr", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "Выполнить выделение" })
+vim.keymap.set("n", "<leader>mp", ":MoltenReevaluateCell<CR>", { desc = "Перезапустить ячейку" })
+vim.keymap.set("n", "<leader>md", ":MoltenDelete<CR>", { desc = "Удалить kernel" })
+
+-- Настройки Molten
+vim.g.molten_image_provider = "image.nvim" -- для отображения изображений
+vim.g.molten_output_win_max_height = 12 -- максимальная высота окна вывода
+vim.g.molten_auto_open_output = true -- автоматически открывать окно вывода
+vim.g.molten_use_border_highlights = false -- отключить границы
+
 -- ==============================
 vim.g.clipboard = {
 	name = "win32yank",
@@ -40,16 +54,14 @@ vim.g.clipboard = {
 vim.cmd([[packadd packer.nvim]])
 require("plugins.plugins")
 
--- ==============================
--- Keymaps
--- ==============================
-require("config.keymaps")
-
 -- =============================
 -- Neo-Tree
 -- =============================
-require("config.neo-tree")
-require("neo-tree.command").execute({ action = "close" })
+-- =============================
+-- Neo-Tree
+-- =============================
+require("config.neo-tree") 
+-- require("neo-tree.command").execute({ action = "open" })
 
 local api = vim.api
 api.nvim_set_keymap(
@@ -104,6 +116,6 @@ require("config.cmp")
 require("config.git")
 
 -- ==============================
--- IPyNB
+-- Keymaps
 -- ==============================
-require("config.ipy")
+require("config.keymaps")
