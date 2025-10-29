@@ -112,6 +112,7 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$HOME/.local/bin:$PATH"
 
 export GEMINI_API_KEY=""
+export GOOGLE_API_KEY=""
 alias ai='aider --model gemini/gemini-2.5-flash'
 
 alias python=python3
@@ -125,6 +126,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+export PATG="/$HOME/.soft/openIDE-251.26927.53.3/bin/openide"
 
 #GIT ALIAS
 # Git Алиасы
@@ -156,3 +158,6 @@ alias grb='git rebase'                                        # Перебази
 
 #IPyNb convert
 alias jtp='jupytext --to ipynb'
+
+#VPN 
+alias vpn='curl -s 2ip.ru | curl -s ip-api.com/json/ | jq'
