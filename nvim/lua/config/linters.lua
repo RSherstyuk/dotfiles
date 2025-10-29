@@ -6,11 +6,8 @@ local lint = require("lint")
 
 lint.linters_by_ft = {
 	python = { "pylint" },
-
 	javascript = { "eslint_d" },
-
 	java = { "checkstyle" },
-
 	-- c = { "clangtidy" },
 	-- cpp = { "clangtidy" },
 }

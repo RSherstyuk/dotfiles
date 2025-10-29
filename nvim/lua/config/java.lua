@@ -218,30 +218,30 @@ function M.setup()
 					},
 					configuration = {
 						runtimes = {
-							{
-								name = "JavaSE-1.8",
-								path = get_java_dir("8"),
-							},
-							{
-								name = "JavaSE-11",
-								path = get_java_dir("11"),
-							},
-							{
-								name = "JavaSE-17",
-								path = get_java_dir("17"),
-							},
+							-- {
+							-- 	name = "JavaSE-1.8",
+							-- 	path = get_java_dir("8"),
+							-- },
+							-- {
+							-- 	name = "JavaSE-11",
+							-- 	path = get_java_dir("11"),
+							-- },
+							-- {
+							-- 	name = "JavaSE-17",
+							-- 	path = get_java_dir("17"),
+							-- },
 							{
 								name = "JavaSE-21",
 								path = get_java_dir("21"),
 							},
-							{
-								name = "JavaSE-23",
-								path = get_java_dir("23"),
-							},
-							{
-								name = "JavaSE-25",
-								path = get_java_dir("25"),
-							},
+							-- {
+							-- 	name = "JavaSE-23",
+							-- 	path = get_java_dir("23"),
+							-- },
+							-- {
+							-- 	name = "JavaSE-25",
+							-- 	path = get_java_dir("25"),
+							-- },
 						},
 					},
 				},

@@ -8,10 +8,10 @@ vim.opt.number = true
 vim.opt.cursorline = false
 vim.opt.swapfile = false
 vim.opt.scrolloff = 7
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = false
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.fileformat = "unix"
@@ -40,8 +40,8 @@ vim.g.molten_use_border_highlights = false -- отключить границы
 vim.g.clipboard = {
 	name = "win32yank",
 	copy = {
-		["+"] = "/home/xyyz/bin/win32yank.exe -i --crlf",
-		["*"] = "/home/xyyz/bin/win32yank.exe -i --crlf",
+		["+"] = "/home/xyz/bin/win32yank.exe -i --crlf",
+		["*"] = "/home/xyz/bin/win32yank.exe -i --crlf",
 	},
 	paste = {
 		["+"] = "/home/xyyz/bin/win32yank.exe -o --lf",
@@ -57,11 +57,7 @@ require("plugins.plugins")
 -- =============================
 -- Neo-Tree
 -- =============================
--- =============================
--- Neo-Tree
--- =============================
 require("config.neo-tree") 
--- require("neo-tree.command").execute({ action = "open" })
 
 local api = vim.api
 api.nvim_set_keymap(
