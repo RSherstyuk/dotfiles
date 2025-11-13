@@ -38,6 +38,22 @@ M.setup = function()
     severity_sort = true,
   })
 
+  lspconfig.gopls.setup({
+    cmd = { "gopls" }, -- Убедитесь, что `gopls` доступен в PATH
+    on_attach = on_attach,
+    capabilities = capabilities,
+
+    settings = {
+      gopls = {
+        analyses = {
+          unusedparams = true,
+        },
+        staticcheck = true,
+      },
+    },
+  })
+
+
   lspconfig.clangd.setup({
     on_attach = on_attach,
   })

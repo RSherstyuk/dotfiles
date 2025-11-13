@@ -138,8 +138,11 @@ require("packer").startup(function()
   use("morhetz/gruvbox")
   use("ayu-theme/ayu-vim")
   use("sainnhe/gruvbox-material")
-
   use("rebelot/kanagawa.nvim")
+  use("folke/tokyonight.nvim")
+  use("catppuccin/nvim")
+  use("neanias/everforest-nvim")
+  use("olimorris/onedarkpro.nvim")
 
   -- Comments
   use({
