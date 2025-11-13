@@ -103,6 +103,11 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
+export Qt6_DIR="/home/xyz/Qt/6.10.0/gcc_64/lib/cmake/Qt6"
+
+export VITASDK=/usr/local/vitasdk
+export PATH=$VITASDK/bin:$PATH # add vitasdk tool to $PATH
+
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 alias n=nvim
 
@@ -126,10 +131,10 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
-export PATG="/$HOME/.soft/openIDE-251.26927.53.3/bin/openide"
+export PATH="$HOME/.soft/go/bin:$PATH"
+export PATH=$HOME/go/bin:$PATH
 
 #GIT ALIAS
-# Git Алиасы
 alias gs='git status -sb'                                    # Статус (кратко)
 alias ga='git add'                                            # Добавить
 alias gaa='git add .'                                         # Добавить все в текущей директории
@@ -156,8 +161,9 @@ alias gcl='git clone'                                         # Клониров
 alias gf='git fetch'                                          # Получить удаленные изменения
 alias grb='git rebase'                                        # Перебазирование
 
+#Other
+alias vpn='curl -s 2ip.ru | curl -s ip-api.com/json/ | jq'
+alias cm='cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON'
+
 #IPyNb convert
 alias jtp='jupytext --to ipynb'
-
-#VPN 
-alias vpn='curl -s 2ip.ru | curl -s ip-api.com/json/ | jq'
