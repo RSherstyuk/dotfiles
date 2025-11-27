@@ -46,6 +46,9 @@ require("neo-tree").setup({
 
 			["q"] = "toggle_hidden",
 
+			["v"] = "open_vsplit",
+			["s"] = "open_split",
+
 			["t"] = "open_tabnew",
 			["P"] = { "toggle_preview", config = { use_float = false } },
 		},
