@@ -26,14 +26,3 @@ keymap("n", "<leader>zM", "zM", opts) -- свернуть все
 keymap("n", "<leader>za", "za", opts) -- переключить текущий
 keymap("n", "<leader>zo", "zo", opts) -- открыть текущий
 keymap("n", "<leader>zc", "zc", opts) -- закрыть текущий
-
--- Создание интерфейса/типа из использования
-
-vim.keymap.set('n', '<leader>ti', '<cmd>TypescriptAddMissingImports<CR>')
-
--- Рефакторинг
-vim.keymap.set('n', '<leader>rf', vim.lsp.buf.code_action)
-
-
--- Переименование
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)

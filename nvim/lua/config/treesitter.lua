@@ -1,13 +1,14 @@
-require('nvim-treesitter.configs').setup({
-  ensure_installed = { "cmake", "c", "cpp", "lua", "java", "python", "go" },
-  sync_install = false,
+require("nvim-treesitter.configs").setup({
+	-- Устанавливать синхронно (true) или асинхронно (false)
+	sync_install = false,
 
-  highlight = {
-    enable = true,
-  },
+	-- Подсветка синтаксиса
+	highlight = {
+		enable = true,
+	},
 
-  indent = {
-    enable = true,
-  },
-
+	-- Автоотступы
+	indent = {
+		enable = true,
+	},
 })
