@@ -167,4 +167,12 @@ require("packer").startup(function()
 			vim.g.molten_auto_open_output = true
 		end,
 	})
+
+	use({
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = function()
+			require("nvim-autopairs").setup({})
+		end,
+	})
 end)
