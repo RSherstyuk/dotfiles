@@ -44,9 +44,9 @@ require("neo-tree").setup({
 			["y"] = "copy_to_clipboard",
 			["p"] = "paste_from_clipboard",
 
-			["H"] = "toggle_hidden",
+			["q"] = "toggle_hidden",
 
-			["t"] = "open_in_tab",
+			["t"] = "open_tabnew",
 			["P"] = { "toggle_preview", config = { use_float = false } },
 		},
 	},
