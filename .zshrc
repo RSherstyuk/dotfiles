@@ -108,8 +108,6 @@ export Qt6_DIR="/home/xyz/Qt/6.10.0/gcc_64/lib/cmake/Qt6"
 export VITASDK=/usr/local/vitasdk
 export PATH=$VITASDK/bin:$PATH # add vitasdk tool to $PATH
 
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
-alias n=nvim
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -132,9 +130,13 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.soft/go/bin:$PATH"
+export PATH="$HOME/.soft/nvim/bin:$PATH"
 export PATH=$HOME/go/bin:$PATH
 
+alias n=nvim
+
 #GIT ALIAS
+# Git Алиасы
 alias gs='git status -sb'                                    # Статус (кратко)
 alias ga='git add'                                            # Добавить
 alias gaa='git add .'                                         # Добавить все в текущей директории
@@ -160,10 +162,72 @@ alias gsh='git show'                                          # Показать
 alias gcl='git clone'                                         # Клонировать репозиторий
 alias gf='git fetch'                                          # Получить удаленные изменения
 alias grb='git rebase'                                        # Перебазирование
-
-#Other
 alias vpn='curl -s 2ip.ru | curl -s ip-api.com/json/ | jq'
 alias cm='cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON'
+alias cmm='cmake -DCMAKE_BUILD_TYPE=Debug'
 
 #IPyNb convert
 alias jtp='jupytext --to ipynb'
+
+
+# --- Функция для активации virtualenv/venv вверх по директориям (venvup) ---
+function venvup() {
+    # 1. Деактивируем любое активное окружение, если оно есть
+    if type deactivate &> /dev/null && [[ -n "$VIRTUAL_ENV" ]]; then
+        echo "Деактивация текущего VENV: $(basename "$VIRTUAL_ENV")"
+        deactivate
+    fi
+
+    # 2. Ищем virtualenv в текущей директории или родительских директориях
+    local current_dir="$PWD"
+    local venv_path=""
+    local max_depth=5 # Ограничиваем глубину поиска
+
+    for ((i=0; i < max_depth; i++)); do
+        # Путь 1: <venv_dir>/bin/activate (стандартный venv)
+        if [[ -f "$current_dir/bin/activate" ]]; then
+            venv_path="$current_dir"
+            break
+        # Путь 2: <parent_dir>/.venv/bin/activate (наиболее распространенный современный шаблон)
+        elif [[ -f "$current_dir/.venv/bin/activate" ]]; then
+            venv_path="$current_dir/.venv"
+            break
+        # Путь 3: Windows-like <venv_dir>/Scripts/activate
+        elif [[ -f "$current_dir/Scripts/activate" ]]; then
+            venv_path="$current_dir"
+            break
+
+        fi
+
+
+        # Если достигнут корень ФС, прекращаем
+        if [[ "$current_dir" == "/" ]]; then
+            break
+        fi
+        
+        # Переход к родительской директории
+        current_dir=$(dirname "$current_dir")
+    done
+
+    # 3. Активируем найденное окружение, если оно есть
+    if [[ -n "$venv_path" ]]; then
+        local activate_script=""
+        if [[ -f "$venv_path/bin/activate" ]]; then
+            activate_script="$venv_path/bin/activate"
+        elif [[ -f "$venv_path/Scripts/activate" ]]; then
+
+            activate_script="$venv_path/Scripts/activate"
+        fi
+
+        if [[ -n "$activate_script" ]]; then
+            echo "Активация VENV: $(basename "$venv_path")"
+            source "$activate_script"
+        fi
+    else
+        echo "⚠️ Виртуальное окружение не найдено в текущей директории или выше (поиск на $max_depth уровней)."
+    fi
+
+}
+
+alias vup="venvup"
+# --- Конец функции venvup ---
