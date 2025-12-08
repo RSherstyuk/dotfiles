@@ -3,7 +3,6 @@
 -- ==============================
 local use = require("packer").use
 
-local dap_plugins = require("plugins.dap")
 local mason_tool = require("plugins.mason-tool")
 local mason = require("plugins.mason")
 
@@ -19,12 +18,26 @@ require("packer").startup(function()
 	use("mfussenegger/nvim-jdtls")
 	use("tpope/vim-dispatch")
 
-	--------------------------------------------------
-	-- dap.lua
-	--------------------------------------------------
-	for _, plugin in ipairs(dap_plugins) do
-		use(plugin)
-	end
+	use("nvim-neotest/nvim-nio")
+	use("mfussenegger/nvim-dap")
+	use("rcarriga/nvim-dap-ui")
+	use("theHamsta/nvim-dap-virtual-text")
+
+	use({
+		"williamboman/mason-nvim-dap.nvim",
+		requires = { "mfussenegger/nvim-dap", "williamboman/mason.nvim" },
+		config = function()
+			require("mason-nvim-dap").setup({
+				ensure_installed = { "cpptools" },
+				automatic_installation = true,
+				handlers = {
+					function(source_name)
+						require("mason-nvim-dap").default_setup(source_name)
+					end,
+				},
+			})
+		end,
+	})
 	--------------------------------------------------
 
 	-- Mason tools
@@ -111,6 +124,7 @@ require("packer").startup(function()
 	})
 
 	-- Themes
+	use({ "ellisonleao/gruvbox.nvim" })
 	use("morhetz/gruvbox")
 	use("ayu-theme/ayu-vim")
 	use("sainnhe/gruvbox-material")

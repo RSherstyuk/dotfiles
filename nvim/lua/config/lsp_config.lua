@@ -48,7 +48,6 @@ M.setup = function()
 		settings = {
 			Lua = {
 				runtime = {
-
 					version = "LuaJIT",
 				},
 				diagnostics = {
@@ -66,12 +65,59 @@ M.setup = function()
 	})
 
 	lspconfig.pyright.setup({
+		capabilities = capabilities,
 		on_attach = on_attach,
+		settings = {
+			python = {
+				-- Указываем Pyright, что все виртуальные окружения
+				-- нужно искать относительно корневой директории проекта (./.venv).
+				venvPath = "./",
+				-- Если окружение находится в .venv внутри проекта,
+				-- Pyright автоматически его найдет, если указать текущий путь.
+			},
+		},
+	})
+
+	lspconfig.gopls.setup({
+		capabilities = capabilities,
+		on_attach = on_attach,
+
+		filetypes = { "go", "gomod", "gowork", "gohtmltmpl" },
+		settings = {
+			gopls = {
+				completeUnimported = true,
+
+				gofumpt = true,
+
+				analyses = {
+					unusedparams = true,
+					shadow = true,
+				},
+
+				-- Настройка для показа встроенных подсказок (Inlay Hints)
+				-- inlayHints = {
+				--     -- Например, для показа типов в объявлениях переменных
+				--     assignVariableTypes = true,
+				--     constantValues = true,
+				-- },
+
+				buildFlags = { "-tags=wireinject" },
+			},
+		},
 	})
 
 	lspconfig.ts_ls.setup({ capabilities = capabilities, on_attach = on_attach })
 
 	lspconfig.clangd.setup({ capabilities = capabilities, on_attach = on_attach })
+
+	lspconfig.neocmake.setup({
+		cmd = { vim.fn.stdpath("data") .. "/lsp_servers/neocmake/neocmakelsp-x86_64-unknown-linux-gnu", "--stdio" },
+		filetypes = { "cmake" },
+		root_dir = lspconfig.util.root_pattern("CMakeLists.txt", ".git"),
+	})
+
+	lspconfig.bashls.setup({ capabilities = capabilities, on_attach = on_attach })
+
 end
 
 return M
