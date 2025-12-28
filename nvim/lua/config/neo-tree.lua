@@ -8,7 +8,6 @@ require("neo-tree").setup({
 		bind_to_cwd = true,
 
 		follow_current_file = {
-
 			enabled = true,
 			auto_open_detect = false,
 		},
