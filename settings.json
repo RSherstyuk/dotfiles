@@ -38,5 +38,8 @@
   "[python]": {
     "editor.defaultFormatter": "mikoz.black-py"
   },
-  "workbench.activityBar.location": "hidden"
+  "workbench.activityBar.location": "hidden",
+  "files.exclude": {
+    "**/.git": true
+  }
 }
