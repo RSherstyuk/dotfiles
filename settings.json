@@ -1,0 +1,42 @@
+{
+  "database-client.autoSync": true,
+  "workbench.editor.showTabs": "single",
+  "workbench.editor.showIcons": false,
+  "workbench.editor.labelFormat": "medium",
+  "breadcrumbs.enabled": false,
+  "files.autoSave": "afterDelay",
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "workbench.colorTheme": "Best Themes - Poimandres More Darker",
+  "notebook.lineNumbers": "on",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "vim.foldfix": true,
+  "vim.leader": ",",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "b"],
+      "commands": ["editor.debug.action.toggleBreakpoint"]
+    }
+  ],
+  "C_Cpp.clang_format_fallbackStyle": "LLVM",
+  "editor.tabSize": 2,
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "editor.defaultFormatter": "ms-pyright.pyright",
+  "editor.fontSize": 16,
+  "editor.minimap.sectionHeaderFontSize": 12,
+  "scm.inputFontSize": 16,
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.fontFamily": "monospace",
+  "workbench.sideBar.location": "right",
+  "editor.semanticHighlighting.enabled": false,
+  "vim.lsp.diagnostics.virtual_text_color": "#ff0000",
+  "vim.lsp.diagnostics_virtual_text_align": "right",
+  "vim.lsp.diagnostics_virtual_text_enabled": 1,
+  "[python]": {
+    "editor.defaultFormatter": "mikoz.black-py"
+  },
+  "workbench.activityBar.location": "hidden"
+}
