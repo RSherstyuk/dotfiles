@@ -69,11 +69,9 @@ M.setup = function()
 		on_attach = on_attach,
 		settings = {
 			python = {
-				-- Указываем Pyright, что все виртуальные окружения
-				-- нужно искать относительно корневой директории проекта (./.venv).
+				pythonPath = "./.venv/bin/python",
 				venvPath = "./",
-				-- Если окружение находится в .venv внутри проекта,
-				-- Pyright автоматически его найдет, если указать текущий путь.
+				venv = ".venv",
 			},
 		},
 	})
@@ -117,7 +115,6 @@ M.setup = function()
 	})
 
 	lspconfig.bashls.setup({ capabilities = capabilities, on_attach = on_attach })
-
 end
 
 return M
