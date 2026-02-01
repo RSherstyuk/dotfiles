@@ -1,4 +1,4 @@
-require("nvim-treesitter.configs").setup({
+require("nvim-treesitter").setup({
 	-- Устанавливать синхронно (true) или асинхронно (false)
 	sync_install = false,
 
