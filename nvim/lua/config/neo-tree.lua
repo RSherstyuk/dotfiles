@@ -1,9 +1,5 @@
--- Файл: lua/config/neo-tree.lua
 require("neo-tree").setup({
-	-- 1. Определяем, какие "источники" будут доступны
 	sources = { "filesystem", "buffers", "git_status" },
-
-	-- 2. Настройки файловой системы
 	filesystem = {
 		bind_to_cwd = true,
 
@@ -16,19 +12,13 @@ require("neo-tree").setup({
 
 			hide_gitignored = true,
 			never_show = {
-
 				".DS_Store",
-
 				"thumbs.db",
 				"node_modules",
 			},
 		},
 	},
-
-	-- 3. Настройки окна (внешний вид и привязки)
-
 	window = {
-
 		position = "left",
 		width = 35,
 		mappings = {
@@ -39,12 +29,9 @@ require("neo-tree").setup({
 			["a"] = { "add", config = { show_path = "none" } },
 			["d"] = "delete",
 			["r"] = "rename",
-
 			["y"] = "copy_to_clipboard",
 			["p"] = "paste_from_clipboard",
-
 			["q"] = "toggle_hidden",
-
 			["v"] = "open_vsplit",
 			["s"] = "open_split",
 
@@ -53,7 +40,6 @@ require("neo-tree").setup({
 		},
 	},
 
-	-- 4. Автоматическое закрытие и относительные номера строк
 	event_handlers = {
 		{
 			event = "neo_tree_buffer_enter",
@@ -64,7 +50,7 @@ require("neo-tree").setup({
 		{
 			event = "neo_tree_buffer_enter",
 			handler = function()
-				vim.opt_local.relativenumber = true -- Включаем relativenumber
+				vim.opt_local.relativenumber = true
 			end,
 		},
 	},
