@@ -19,7 +19,6 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.termguicolors = true
 vim.opt.relativenumber = true
-vim.g.mapleader = ","
 vim.opt.clipboard = "unnamedplus"
 
 -- ==============================
@@ -64,6 +63,10 @@ require("lazy").setup({
 		{ import = "plugins" },
 	},
 	checker = { enabled = true },
+	change_detection = {
+		enabled = false,
+		notify = false,
+	},
 })
 
 -- ==============================
