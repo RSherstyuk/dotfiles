@@ -2,14 +2,12 @@ require("neo-tree").setup({
 	sources = { "filesystem", "buffers", "git_status" },
 	filesystem = {
 		bind_to_cwd = true,
-
 		follow_current_file = {
 			enabled = true,
 			auto_open_detect = false,
 		},
 		filtered_items = {
 			hide_dotfiles = true,
-
 			hide_gitignored = true,
 			never_show = {
 				".DS_Store",
@@ -34,7 +32,6 @@ require("neo-tree").setup({
 			["q"] = "toggle_hidden",
 			["v"] = "open_vsplit",
 			["s"] = "open_split",
-
 			["t"] = "open_tabnew",
 			["P"] = { "toggle_preview", config = { use_float = false } },
 		},
