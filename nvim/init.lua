@@ -74,12 +74,6 @@ require("lazy").setup({
 -- ==============================
 require("config.keymaps")
 
--- =============================
--- Neo-Tree
--- =============================
--- require("config.neo-tree")
--- require("neo-tree.command").execute({ action = "close" })
-
 local api = vim.api
 api.nvim_set_keymap(
 	"n",
@@ -166,4 +160,4 @@ require("config.formatters")
 -- ==============================
 -- Настройка gitsigns.nvim
 -- ==============================
--- require("config.git")
+require("config.git")
