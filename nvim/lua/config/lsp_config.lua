@@ -41,7 +41,7 @@ M.setup = function()
 	-- Серверы
 	lspconfig.lua_ls.setup({
 		cmd = {
-			"/home/xyz/.local/share/nvim/lsp_servers/lua_lsp/bin/lua-language-server",
+			"/home/russh/.local/share/nvim/lsp_servers/lua_lsp/bin/lua-language-server",
 		},
 		capabilities = capabilities,
 		on_attach = on_attach,

@@ -1,6 +1,6 @@
--- ==============================
--- Общие настройки
--- ==============================
+-- -- ==============================
+-- -- Общие настройки
+-- -- ==============================
 vim.opt.mouse = "a"
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
@@ -23,7 +23,6 @@ vim.g.mapleader = ","
 
 vim.opt.clipboard = "unnamedplus"
 
-
 -- ==============================
 vim.g.clipboard = {
 	name = "win32yank",
@@ -40,12 +39,33 @@ vim.g.clipboard = {
 }
 -- ==============================
 
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
 
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
+end
+vim.opt.rtp:prepend(lazypath)
 
-vim.cmd([[packadd packer.nvim]])
-require("plugins.plugins")
+vim.g.mapleader = ","
+vim.g.maplocalleader = "\\"
 
-require("config.treesitter")
+require("lazy").setup({
+	spec = {
+		{ import = "plugins" },
+	},
+	checker = { enabled = true },
+})
 
 -- ==============================
 -- Keymaps
@@ -55,8 +75,8 @@ require("config.keymaps")
 -- =============================
 -- Neo-Tree
 -- =============================
-require("config.neo-tree")
-require("neo-tree.command").execute({ action = "close" })
+-- require("config.neo-tree")
+-- require("neo-tree.command").execute({ action = "close" })
 
 local api = vim.api
 api.nvim_set_keymap(
@@ -91,61 +111,59 @@ vim.o.foldenable = true
 --     end,
 -- })
 
-require("kanagawa").setup({
-	transparent = true,
-	overrides = function(colors)
-		return {
-			Normal = { bg = "NONE" },
-			NormalFloat = { bg = "NONE" },
-
-			LineNr = { bg = "NONE" },
-			SignColumn = { bg = "NONE" },
-
-			StatusLine = { bg = "NONE" },
-			EndOfBuffer = { bg = "NONE" },
-		}
-	end,
-})
-
-vim.cmd([[colorscheme kanagawa-dragon]])
+-- require("kanagawa").setup({
+-- 	transparent = true,
+-- 	overrides = function(colors)
+-- 		return {
+-- 			Normal = { bg = "NONE" },
+-- 			NormalFloat = { bg = "NONE" },
+--
+-- 			LineNr = { bg = "NONE" },
+-- 			SignColumn = { bg = "NONE" },
+--
+-- 			StatusLine = { bg = "NONE" },
+-- 			EndOfBuffer = { bg = "NONE" },
+-- 		}
+-- 	end,
+-- })
+--
+-- vim.cmd([[colorscheme kanagawa-dragon]])
 
 -- ==============================
 -- LSP
 -- ==============================
-require("config.lsp_config").setup()
+-- require("config.lsp_config").setup()
+-- Безопасная загрузка LSP
+local status_ok, lsp_config = pcall(require, "config.lsp_config")
+if status_ok then
+	lsp_config.setup()
+end
 
 -- -- ==============================
 -- -- FORMATTERS & LINTERS
 -- -- ==============================
-require("config.formatters")
+-- require("config.formatters")
 -- require("config.linters")
 
 -- ==============================
 -- Java
 -- ==============================
-local jdtls_config_success, jdtls_config = pcall(require, "config.java")
-if jdtls_config_success and jdtls_config.setup then
-	jdtls_config.setup()
-end
+-- local jdtls_config_success, jdtls_config = pcall(require, "config.java")
+-- if jdtls_config_success and jdtls_config.setup then
+-- 	jdtls_config.setup()
+-- end
 
 -- ==============================
 -- Auto-save
 -- ==============================
-require("auto-save").setup()
+-- require("auto-save").setup()
 
 -- ==============================
 -- nvim-cmp
 -- ==============================
-require("config.cmp")
+-- require("config.cmp")
 
 -- ==============================
 -- Настройка gitsigns.nvim
 -- ==============================
-
-require("config.git")
-
--- ==============================
--- IPyNB
--- ==============================
-require("config.ipy")
-
+-- require("config.git")
