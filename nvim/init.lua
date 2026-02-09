@@ -87,40 +87,6 @@ vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 vim.o.foldlevel = 99
 vim.o.foldenable = true
 
--- ==============================
--- Цветовая схема
--- ==============================
--- require('kanagawa').setup({
---     overrides = function(colors)
---         return {
---             -- Делаем основной фон абсолютно черным
---             Normal = { bg = "#000000" },
---             -- Для плавающих окон (подсказки, диагностика)
---             NormalFloat = { bg = "#000000" },
-
---             -- Фон для строк с номерами
---             LineNr = { bg = "#000000" },
---             SignColumn = { bg = "#000000" },
---             -- Статусная строка (если хотите тоже черную)
---             StatusLine = { bg = "#000000" },
---         }
---     end,
--- })
-
-require("kanagawa").setup({
-	transparent = true,
-	overrides = function(colors)
-		return {
-			Normal = { bg = "NONE" },
-			NormalFloat = { bg = "NONE" },
-			LineNr = { bg = "NONE" },
-			SignColumn = { bg = "NONE" },
-			StatusLine = { bg = "NONE" },
-			EndOfBuffer = { bg = "NONE" },
-		}
-	end,
-})
-
 vim.cmd([[colorscheme kanagawa-dragon]])
 
 -- ==============================
