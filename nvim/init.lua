@@ -20,30 +20,32 @@ vim.opt.splitright = true
 vim.opt.termguicolors = true
 vim.opt.relativenumber = true
 vim.g.mapleader = ","
+
 vim.opt.clipboard = "unnamedplus"
+
 
 -- ==============================
 vim.g.clipboard = {
 	name = "win32yank",
+
 	copy = {
-		["+"] = "/home/xyz/bin/win32yank.exe -i --crlf",
-		["*"] = "/home/xyz/bin/win32yank.exe -i --crlf",
+		["+"] = "/home/russh/bin/win32yank.exe -i --crlf",
+		["*"] = "/home/russh/bin/win32yank.exe -i --crlf",
 	},
 	paste = {
-		["+"] = "/home/xyz/bin/win32yank.exe -o --lf",
-		["*"] = "/home/xyz/bin/win32yank.exe -o --lf",
+		["+"] = "/home/russh/bin/win32yank.exe -o --lf",
+		["*"] = "/home/russh/bin/win32yank.exe -o --lf",
 	},
 	cache_enabled = 0,
 }
 -- ==============================
 
+
+
 vim.cmd([[packadd packer.nvim]])
 require("plugins.plugins")
 
-
--- =============================
--- DAP
--- =============================
+require("config.treesitter")
 
 -- ==============================
 -- Keymaps
@@ -72,37 +74,38 @@ vim.o.foldenable = true
 -- ==============================
 -- Цветовая схема
 -- ==============================
-require('kanagawa').setup({
-    overrides = function(colors)
-        return {
-            -- Делаем основной фон абсолютно черным
-            Normal = { bg = "#000000" },
-            -- Для плавающих окон (подсказки, диагностика)
-            NormalFloat = { bg = "#000000" },
-            -- Фон для строк с номерами
-            LineNr = { bg = "#000000" },
-            SignColumn = { bg = "#000000" },
-            -- Статусная строка (если хотите тоже черную)
-            StatusLine = { bg = "#000000" },
-        }
-    end,
-})
-
--- Прозрачный фон
 -- require('kanagawa').setup({
---     transparent = true,
 --     overrides = function(colors)
 --         return {
---             Normal = { bg = "NONE" },
---             NormalFloat = { bg = "NONE" },
---             LineNr = { bg = "NONE" },
---
---             SignColumn = { bg = "NONE" },
---             StatusLine = { bg = "NONE" },
---             EndOfBuffer = { bg = "NONE" },
+--             -- Делаем основной фон абсолютно черным
+--             Normal = { bg = "#000000" },
+--             -- Для плавающих окон (подсказки, диагностика)
+--             NormalFloat = { bg = "#000000" },
+
+--             -- Фон для строк с номерами
+--             LineNr = { bg = "#000000" },
+--             SignColumn = { bg = "#000000" },
+--             -- Статусная строка (если хотите тоже черную)
+--             StatusLine = { bg = "#000000" },
 --         }
 --     end,
 -- })
+
+require("kanagawa").setup({
+	transparent = true,
+	overrides = function(colors)
+		return {
+			Normal = { bg = "NONE" },
+			NormalFloat = { bg = "NONE" },
+
+			LineNr = { bg = "NONE" },
+			SignColumn = { bg = "NONE" },
+
+			StatusLine = { bg = "NONE" },
+			EndOfBuffer = { bg = "NONE" },
+		}
+	end,
+})
 
 vim.cmd([[colorscheme kanagawa-dragon]])
 
@@ -138,9 +141,11 @@ require("config.cmp")
 -- ==============================
 -- Настройка gitsigns.nvim
 -- ==============================
+
 require("config.git")
 
 -- ==============================
 -- IPyNB
 -- ==============================
 require("config.ipy")
+

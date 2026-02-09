@@ -1,14 +1,25 @@
-require("nvim-treesitter").setup({
-	-- Устанавливать синхронно (true) или асинхронно (false)
-	sync_install = false,
+require("nvim-treesitter.install").prefer_git = true
 
-	-- Подсветка синтаксиса
+require("nvim-treesitter").setup({
+	ensure_installed = {
+		"lua",
+		"python",
+		"bash",
+		"json",
+		"sql",
+		"vim",
+		"markdown",
+	},
+	sync_install = false,
+	auto_install = true,
 	highlight = {
 		enable = true,
+		additional_vim_regex_highlighting = false,
 	},
-
-	-- Автоотступы
 	indent = {
+
 		enable = true,
 	},
 })
+
+

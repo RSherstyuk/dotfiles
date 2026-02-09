@@ -1,8 +1,6 @@
 -- ==============================
 -- Автокоманды
 -- ==============================
-
--- C/C++: Форматирование перед сохранением
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
 	callback = function()
@@ -10,7 +8,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
--- Lua: сохранить и выполнить
 
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'lua',
@@ -21,7 +18,6 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 
--- Python: установить colorcolumn и выполнить
 vim.api.nvim_create_autocmd('FileType', {
 
 	pattern = 'python',
@@ -33,7 +29,6 @@ vim.api.nvim_create_autocmd('FileType', {
 	end,
 })
 
--- C: скомпилировать и выполнить
 vim.api.nvim_create_autocmd('FileType', {
 
 	pattern = 'c',
@@ -43,7 +38,6 @@ vim.api.nvim_create_autocmd('FileType', {
 	end,
 })
 
--- Shell и Go: сохранить и выполнить
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'sh', 'go' },
 	callback = function()
@@ -53,7 +47,6 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 
--- Java: скомпилировать и выполнить
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'java',
 	callback = function()

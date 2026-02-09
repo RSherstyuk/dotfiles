@@ -10,5 +10,14 @@ cmp.setup({
 		["<Up>"] = cmp.mapping.select_prev_item(),
 		["<Down>"] = cmp.mapping.select_next_item(),
 	},
-	sources = cmp.config.sources({ { name = "nvim_lsp" } }),
+
+	sources = cmp.config.sources({ { name = "nvim_lsp" }, { name = "cmp-dbee" } }),
 })
+
+cmp.setup.filetype('sql', {
+  sources = cmp.config.sources({
+    { name = 'cmp-dbee' },
+    { name = 'buffer' },
+  })
+})
+

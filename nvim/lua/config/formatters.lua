@@ -10,7 +10,6 @@ require("conform").setup({
 	},
 })
 
--- Горячая клавиша для форматирования
 vim.keymap.set({ "n", "v" }, "<leader>f", function()
 	require("conform").format({
 		async = true,
