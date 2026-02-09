@@ -2,11 +2,7 @@
 local M = {}
 
 M.setup = function()
-	-- ==============================
-	-- Настройка LSP
-	-- ==============================
 	local lspconfig = require("lspconfig")
-	-- Убедитесь, что 'cmp_nvim_lsp' установлен, если вы его используете.
 
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -29,7 +25,6 @@ M.setup = function()
 		end, opts)
 	end
 
-	-- Включаем отображение текста ошибок
 	vim.diagnostic.config({
 		virtual_text = true,
 		signs = true,
@@ -38,7 +33,6 @@ M.setup = function()
 		severity_sort = true,
 	})
 
-	-- Серверы
 	lspconfig.lua_ls.setup({
 		cmd = {
 			"/home/russh/.local/share/nvim/lsp_servers/lua_lsp/bin/lua-language-server",
@@ -91,13 +85,6 @@ M.setup = function()
 					unusedparams = true,
 					shadow = true,
 				},
-
-				-- Настройка для показа встроенных подсказок (Inlay Hints)
-				-- inlayHints = {
-				--     -- Например, для показа типов в объявлениях переменных
-				--     assignVariableTypes = true,
-				--     constantValues = true,
-				-- },
 
 				buildFlags = { "-tags=wireinject" },
 			},

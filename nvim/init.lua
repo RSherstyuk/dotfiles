@@ -1,4 +1,3 @@
--- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -49,8 +48,6 @@ vim.cmd([[colorscheme kanagawa-dragon]])
 -- ==============================
 -- LSP
 -- ==============================
--- require("config.lsp_config").setup()
--- Безопасная загрузка LSP
 local status_ok, lsp_config = pcall(require, "config.lsp_config")
 if status_ok then
 	lsp_config.setup()
@@ -71,16 +68,6 @@ require("config.formatters")
 -- end
 
 -- ==============================
--- Auto-save
--- ==============================
--- require("auto-save").setup()
-
--- ==============================
--- nvim-cmp
--- ==============================
--- require("config.cmp")
-
--- ==============================
--- Настройка gitsigns.nvim
+-- gitsigns.nvim
 -- ==============================
 require("config.git")
