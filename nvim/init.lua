@@ -20,7 +20,6 @@ vim.opt.splitright = true
 vim.opt.termguicolors = true
 vim.opt.relativenumber = true
 vim.g.mapleader = ","
-
 vim.opt.clipboard = "unnamedplus"
 
 -- ==============================
@@ -111,23 +110,21 @@ vim.o.foldenable = true
 --     end,
 -- })
 
--- require("kanagawa").setup({
--- 	transparent = true,
--- 	overrides = function(colors)
--- 		return {
--- 			Normal = { bg = "NONE" },
--- 			NormalFloat = { bg = "NONE" },
---
--- 			LineNr = { bg = "NONE" },
--- 			SignColumn = { bg = "NONE" },
---
--- 			StatusLine = { bg = "NONE" },
--- 			EndOfBuffer = { bg = "NONE" },
--- 		}
--- 	end,
--- })
---
--- vim.cmd([[colorscheme kanagawa-dragon]])
+require("kanagawa").setup({
+	transparent = true,
+	overrides = function(colors)
+		return {
+			Normal = { bg = "NONE" },
+			NormalFloat = { bg = "NONE" },
+			LineNr = { bg = "NONE" },
+			SignColumn = { bg = "NONE" },
+			StatusLine = { bg = "NONE" },
+			EndOfBuffer = { bg = "NONE" },
+		}
+	end,
+})
+
+vim.cmd([[colorscheme kanagawa-dragon]])
 
 -- ==============================
 -- LSP
@@ -142,7 +139,7 @@ end
 -- -- ==============================
 -- -- FORMATTERS & LINTERS
 -- -- ==============================
--- require("config.formatters")
+require("config.formatters")
 -- require("config.linters")
 
 -- ==============================

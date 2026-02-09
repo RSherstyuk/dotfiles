@@ -5,6 +5,7 @@ return {
   "tpope/vim-dispatch",
   "tpope/vim-fugitive",
   "tpope/vim-rhubarb",
+  "stevearc/conform.nvim",
   "Pocco81/auto-save.nvim",
   { "windwp/nvim-autopairs", event = "InsertEnter", config = true },
 }
