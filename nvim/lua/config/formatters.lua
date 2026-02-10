@@ -7,6 +7,7 @@ require("conform").setup({
 		c = { "clang-format" },
 		cpp = { "clang-format" },
 		java = {},
+    sql = {"sqruff"}
 	},
 })
 

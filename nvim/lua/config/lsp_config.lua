@@ -102,6 +102,30 @@ M.setup = function()
 	})
 
 	lspconfig.bashls.setup({ capabilities = capabilities, on_attach = on_attach })
+
+	lspconfig.sqls.setup({
+		capabilities = capabilities,
+		on_attach = function(client, bufnr)
+			require("sqls").on_attach(client, bufnr) -- require sqls.nvim
+			vim.keymap.set("n", "<leader>sr", "<cmd>SqlsExecuteQuery<cr>", { buffer = bufnr, desc = "Run query" })
+			vim.keymap.set(
+				"v",
+				"<leader>sr",
+				"<cmd>SqlsExecuteQuery<cr>",
+				{ buffer = bufnr, desc = "Run selected query" }
+			)
+		end,
+		settings = {
+			sqls = {
+				connections = {
+					{
+						driver = "postgresql",
+						dataSourceName = "host=127.0.0.1 port=5432 user=myuser password=mypassword dbname=mydb sslmode=disable",
+					},
+				},
+			},
+		},
+	})
 end
 
 return M
