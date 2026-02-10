@@ -12,7 +12,6 @@ M.setup = function()
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 		vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-
 		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
 		vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
 		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
@@ -108,12 +107,10 @@ M.setup = function()
 		on_attach = function(client, bufnr)
 			require("sqls").on_attach(client, bufnr) -- require sqls.nvim
 			vim.keymap.set("n", "<leader>sr", "<cmd>SqlsExecuteQuery<cr>", { buffer = bufnr, desc = "Run query" })
-			vim.keymap.set(
-				"v",
-				"<leader>sr",
-				"<cmd>SqlsExecuteQuery<cr>",
-				{ buffer = bufnr, desc = "Run selected query" }
-			)
+			vim.keymap.set("v", "<leader>sr", ":'<,'>SqlsExecuteQuery<cr>", {
+				buffer = bufnr,
+				desc = "Run selected query",
+			})
 		end,
 		settings = {
 			sqls = {
@@ -121,6 +118,10 @@ M.setup = function()
 					{
 						driver = "postgresql",
 						dataSourceName = "host=127.0.0.1 port=5432 user=myuser password=mypassword dbname=mydb sslmode=disable",
+					},
+					{
+						driver = "sqlite3",
+						dataSourceName = "/home/russh/work/sobes/practice.db",
 					},
 				},
 			},
