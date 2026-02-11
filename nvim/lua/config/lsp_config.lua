@@ -100,7 +100,12 @@ M.setup = function()
 		root_dir = lspconfig.util.root_pattern("CMakeLists.txt", ".git"),
 	})
 
-	lspconfig.bashls.setup({ capabilities = capabilities, on_attach = on_attach })
+	lspconfig.bashls.setup({
+		cmd = { "bash-language-server", "start" },
+		capabilities = capabilities,
+		filetypes = { "bash", "sh" },
+		on_attach = on_attach,
+	})
 
 	lspconfig.sqls.setup({
 		capabilities = capabilities,
