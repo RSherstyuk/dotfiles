@@ -1,6 +1,3 @@
-vim.o.foldmethod = "expr"
-vim.o.foldexpr = "nvim_treesitter#foldexpr()"
-
 require("ufo").setup({
   provider_selector = function()
     return { "treesitter", "indent" }
