@@ -45,7 +45,9 @@ vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 vim.o.foldlevel = 99
 vim.o.foldenable = true
 
-vim.cmd([[colorscheme kanagawa-dragon]])
+vim.o.background = "light"
+-- vim.cmd([[colorscheme kanagawa-dragon]])
+vim.cmd([[colorscheme gruvbox]])
 
 -- ==============================
 -- LSP
