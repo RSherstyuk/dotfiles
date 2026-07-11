@@ -15,7 +15,7 @@ M.setup = function()
 		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
 		vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
 		-- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references, opts)
+		vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
 		vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
 		vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 		vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
@@ -63,6 +63,13 @@ M.setup = function()
 		on_attach = on_attach,
 		settings = {
 			python = {
+				analysis = {
+					-- "off"
+					-- "basic"
+					typeCheckingMode = "off",
+					autoSearchPaths = true,
+					useLibraryCodeForTypes = true,
+				},
 				pythonPath = "./.venv/bin/python",
 				venvPath = "./",
 				venv = ".venv",
