@@ -6,11 +6,8 @@ local lint = require("lint")
 
 lint.linters_by_ft = {
 	python = { "pylint" },
-
 	javascript = { "eslint_d" },
-
 	java = { "checkstyle" },
-
 	-- c = { "clangtidy" },
 	-- cpp = { "clangtidy" },
 }
@@ -26,7 +23,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 vim.diagnostic.config({
 	virtual_text = true,
 	underline = true,
-
 	signs = true,
 	update_in_insert = false,
 })

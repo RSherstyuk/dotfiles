@@ -1,11 +1,26 @@
+-- return {
+-- 	"numToStr/Comment.nvim",
+-- 	config = function()
+-- 		require("Comment").setup({
+-- 			padding = true,
+-- 			toggler = { line = ",cc", block = ",cb" },
+-- 			opleader = { line = ",c", block = ",b" },
+-- 		})
+-- 	end,
+-- }
 return {
-	"numToStr/Comment.nvim",
+	"echasnovski/mini.comment",
+	version = false,
 	config = function()
-		require("Comment").setup({
-			padding = true,
-			toggler = { line = ",cc", block = ",cb" },
+		require("mini.comment").setup({
+			mappings = {
+				comment_line = "<leader>c",
 
-			opleader = { line = ",c", block = ",b" },
+				comment = "<leader>c",
+				comment_visual = "<leader>c",
+
+				textobject = "gc",
+			},
 		})
 	end,
 }

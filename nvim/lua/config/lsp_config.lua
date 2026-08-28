@@ -35,7 +35,7 @@ M.setup = function()
 
 	lspconfig.lua_ls.setup({
 		cmd = {
-			"/home/russh/.local/share/nvim/lsp_servers/lua_lsp/bin/lua-language-server",
+			"/home/xyz/.local/share/nvim/lsp_servers/lua_lsp/bin/lua-language-server",
 		},
 		capabilities = capabilities,
 		on_attach = on_attach,
@@ -118,7 +118,7 @@ M.setup = function()
 	lspconfig.sqls.setup({
 		capabilities = capabilities,
 		on_attach = function(client, bufnr)
-			require("sqls").on_attach(client, bufnr) -- require sqls.nvim
+		require("sqls").on_attach(client, bufnr) -- require sqls.nvim
 			vim.keymap.set("n", "<leader>sr", "<cmd>SqlsExecuteQuery<cr>", { buffer = bufnr, desc = "Run query" })
 			vim.keymap.set("v", "<leader>sr", ":'<,'>SqlsExecuteQuery<cr>", {
 				buffer = bufnr,

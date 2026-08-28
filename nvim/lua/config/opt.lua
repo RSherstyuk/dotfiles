@@ -26,12 +26,12 @@ vim.g.clipboard = {
 	name = "win32yank",
 
 	copy = {
-		["+"] = "/home/russh/bin/win32yank.exe -i --crlf",
-		["*"] = "/home/russh/bin/win32yank.exe -i --crlf",
+		["+"] = "/home/xyz/bin/win32yank.exe -i --crlf",
+		["*"] = "/home/xyz/bin/win32yank.exe -i --crlf",
 	},
 	paste = {
-		["+"] = "/home/russh/bin/win32yank.exe -o --lf",
-		["*"] = "/home/russh/bin/win32yank.exe -o --lf",
+		["+"] = "/home/xyz/bin/win32yank.exe -o --lf",
+		["*"] = "/home/xyz/bin/win32yank.exe -o --lf",
 	},
 	cache_enabled = 0,
 }
