@@ -32,6 +32,7 @@
   "terminal.integrated.fontFamily": "monospace",
   "workbench.sideBar.location": "right",
   "editor.semanticHighlighting.enabled": false,
+  "vim.useSystemClipboard": true,
   "vim.lsp.diagnostics.virtual_text_color": "#ff0000",
   "vim.lsp.diagnostics_virtual_text_align": "right",
   "vim.lsp.diagnostics_virtual_text_enabled": 1,
