@@ -2,8 +2,6 @@
 local M = {}
 
 M.setup = function()
-	local lspconfig = require("lspconfig")
-
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 	local on_attach = function(_, bufnr)
@@ -33,7 +31,7 @@ M.setup = function()
 		severity_sort = true,
 	})
 
-	lspconfig.lua_ls.setup({
+	vim.lsp.config("lua_ls", {
 		cmd = {
 			"/home/xyz/.local/share/nvim/lsp_servers/lua_lsp/bin/lua-language-server",
 		},
@@ -58,7 +56,7 @@ M.setup = function()
 		},
 	})
 
-	lspconfig.pyright.setup({
+	vim.lsp.config("pyright", {
 		capabilities = capabilities,
 		on_attach = on_attach,
 		settings = {
@@ -77,7 +75,7 @@ M.setup = function()
 		},
 	})
 
-	lspconfig.gopls.setup({
+	vim.lsp.config("gopls", {
 		capabilities = capabilities,
 		on_attach = on_attach,
 
@@ -98,27 +96,27 @@ M.setup = function()
 		},
 	})
 
-	lspconfig.ts_ls.setup({ capabilities = capabilities, on_attach = on_attach })
+	vim.lsp.config("ts_ls", { capabilities = capabilities, on_attach = on_attach })
 
-	lspconfig.clangd.setup({ capabilities = capabilities, on_attach = on_attach })
+	vim.lsp.config("clangd", { capabilities = capabilities, on_attach = on_attach })
 
-	lspconfig.neocmake.setup({
-		cmd = { vim.fn.stdpath("data") .. "/lsp_servers/neocmake/neocmakelsp-x86_64-unknown-linux-gnu", "--stdio" },
+	vim.lsp.config("neocmake", {
+		-- cmd = { vim.fn.stdpath("data") .. "/lsp_servers/neocmake/neocmakelsp-x86_64-unknown-linux-gnu", "--stdio" },
 		filetypes = { "cmake" },
-		root_dir = lspconfig.util.root_pattern("CMakeLists.txt", ".git"),
+		root_markers = { "CMakeLists.txt", ".git" },
 	})
 
-	lspconfig.bashls.setup({
+	vim.lsp.config("bashls", {
 		cmd = { "bash-language-server", "start" },
 		capabilities = capabilities,
 		filetypes = { "bash", "sh" },
 		on_attach = on_attach,
 	})
 
-	lspconfig.sqls.setup({
+	vim.lsp.config("sqls", {
 		capabilities = capabilities,
 		on_attach = function(client, bufnr)
-		require("sqls").on_attach(client, bufnr) -- require sqls.nvim
+			require("sqls").on_attach(client, bufnr) -- require sqls.nvim
 			vim.keymap.set("n", "<leader>sr", "<cmd>SqlsExecuteQuery<cr>", { buffer = bufnr, desc = "Run query" })
 			vim.keymap.set("v", "<leader>sr", ":'<,'>SqlsExecuteQuery<cr>", {
 				buffer = bufnr,
@@ -139,6 +137,17 @@ M.setup = function()
 				},
 			},
 		},
+	})
+
+	vim.lsp.enable({
+		"lua_ls",
+		"pyright",
+		"gopls",
+		"ts_ls",
+		"clangd",
+		"neocmake",
+		"bashls",
+		"sqls",
 	})
 end
 

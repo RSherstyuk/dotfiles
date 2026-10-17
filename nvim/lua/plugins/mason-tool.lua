@@ -8,17 +8,17 @@ return {
 		config = function()
 			require("mason-tool-installer").setup({
 				ensure_installed = {
-					"autopep8",
+					-- "autopep8",
 					"buf",
 					"checkstyle",
 					"lua-language-server",
-					"markdownlint",
-					"prettier",
-					"protolint",
-					"ruff",
-					"sqlfluff",
-					"stylelint",
-					"stylua",
+					-- "markdownlint",
+					-- "prettier",
+					-- "protolint",
+					-- "ruff",
+					-- "sqlfluff",
+					-- "stylelint",
+					-- "stylua",
 				},
 				start_delay = 0,
 			})
