@@ -22,6 +22,13 @@ vim.opt.relativenumber = true
 vim.opt.clipboard = "unnamedplus"
 
 -- ==============================
+-- Git / UI responsiveness
+-- ==============================
+vim.opt.updatetime = 250
+vim.opt.signcolumn = "yes"
+vim.opt.timeoutlen = 400
+
+-- ==============================
 vim.g.clipboard = {
 	name = "win32yank",
 

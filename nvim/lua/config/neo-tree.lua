@@ -47,11 +47,5 @@ require("neo-tree").setup({
 				vim.opt_local.relativenumber = true
 			end,
 		},
-		{
-			event = "neo_tree_buffer_enter",
-			handler = function()
-				vim.opt_local.relativenumber = true
-			end,
-		},
 	},
 })
