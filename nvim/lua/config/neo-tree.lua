@@ -2,6 +2,7 @@ require("neo-tree").setup({
 	sources = { "filesystem", "buffers", "git_status" },
 	filesystem = {
 		bind_to_cwd = true,
+		use_libuv_file_watcher = true,
 
 		follow_current_file = {
 			enabled = true,
